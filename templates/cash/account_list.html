@@ -1,0 +1,27 @@
+{% extends "cash/base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+        {% if object_list %}
+        <ul>
+            {% for account in object_list %}
+            {% ifchanged account.type %}
+            </li>
+    	        <h3>{{ account.get_type_display }}</h3>
+            </li>
+            {% endifchanged %}
+            <li><a href="{{ account.id }}/">{{ account }}</a> (balance {{ account.balance|floatformat:2}})</li>
+            {% endfor %}
+        </ul>
+
+        {% else %}
+
+        <p>Sorry dude, no stuff here.. if yor're bored take a look ad <a href="http://stacktrace.it/">stacktrace</a></p>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

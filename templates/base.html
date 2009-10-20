@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
+	<head>
+		<title>Alchemy {% block title %}{% endblock %}</title>
+		
+		<link rel="stylesheet" type="text/css" href="/static/css/blueprint/screen.css" media="screen, projection"></link>
+		<link rel="stylesheet" type="text/css" href="/static/css/blueprint/print.css" media="print"></link>		
+		<link rel="stylesheet" type="text/css" href="/static/css/blueprint/plugins/fancy-type/screen.css" media="screen"></link>		
+		
+		<script type="text/javascript" src="/static/jquery/ui/1.5.2/jquery-1.2.6.js"></script>
+		
+		<style type="text/css">
+			body { margin-top: 1em;}
+		</style>
+		
+		{% block head %}{% endblock %}
+	<head>
+
+	<body>
+
+		<div class="container">
+                
+    	    <div class="span-16">
+    	    
+	        	<a href="{% url cash-home %}">home</a> |
+        	
+				{% if user.is_authenticated %}
+        	    <a href="{% url logout %}">logout</a> |
+            	<a href="{% url account %}">account</a> |
+	            <a href="{% url transfer-add %}">transfer</a> |
+    	        <a href="{% url report %}">report</a> 
+				{% else %}                    
+            	<a href="{% url login %}">login</a>
+	        	{% endif %}
+            
+	        </div>
+        
+		
+    	    <div class="span-7">
+	        
+	            {% if user.is_authenticated %}
+    	        
+        	    <form method="get" action="{% url transfer-list %}">
+		    		<input type="text" id="id_search_by_description" name="description">
+			    	<input type="submit" value="Search">
+				</form>
+			
+      			{% endif %}
+
+       		</div>
+        
+		</div>
+
+
+
+		{% if messages %}
+		<div class="container">
+    	    	    {% for message in messages %}
+		    <div class="span-10 message success">{{ message }}</div>
+        	    {% endfor %}
+		</div>
+		{% endif %}
+		
+		
+		{% block content %}{% endblock %}
+
+		<div class="container">
+			<div  class="span-23 last">
+				<h3 class="alt">Grazie per utilizzare questa applicazione web.. this application is proudly <a href="http://www.djangoproject.com">Django powered.</a></h3>
+			</div>
+		</div>
+		
+		
+		{% comment %}
+          	<script type="text/javascript">
+            		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          	</script>
+          	<script type="text/javascript">
+            		var pageTracker = _gat._getTracker("UA-4334580-1");
+            		pageTracker._initData();
+            		pageTracker._trackPageview();
+          	</script>
+		{% endcomment %}
+	
+	</body>
+</html>

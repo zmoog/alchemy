@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block head %}
+
+<script type="text/javascript" src="/static/jquery/ui/1.5.2/ui/ui.core.js"></script>
+<script type="text/javascript" src="/static/jquery/ui/1.5.2/ui/ui.resizable.js"></script>
+<script type="text/javascript" src="/static/jquery/ui/1.5.2/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/static/jquery/ui/1.5.2/ui/ui.datepicker.js"></script>
+<script type="text/javascript" src="/static/jquery/ui/1.5.2/ui/i18n/ui.datepicker-it.js"></script>
+<script type="text/javascript" src="/static/jquery/ui/1.5.2/ui/ui.draggable.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#id_validity_date').datepicker({'dateFormat': 'yy-mm-dd'});
+		$('#id_amount').focus();
+        	$('.message').animate({opacity: 1.0}, 5000).fadeOut('slow');
+		$('<br/>').appendTo($('label'))
+		$('fieldset input[type=text]').addClass('text');
+	});
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="span-12 colborder">
+	<hr/>
+	<h3 class="alt">Inserire qui le spese..</h3>
+
+	<form action="" method="POST">
+
+	    <fieldset>
+    		{{ form.as_p }}
+
+		    <input type="submit" value="Submit" />
+		    <input type="reset" value="Reset" />
+	    </fieldset>
+	</form>
+    </div>
+
+
+<div class="span-8">
+
+	<hr/>
+	<h3 class="alt">Ultimi trasferimenti.</h3>
+
+	{% if latest %}
+
+	{% regroup latest by validity_date as latest_by_day %}
+
+	<ul>
+	{% for item in latest_by_day %}
+
+		<li>
+			<h4 class="alt">{{ item.grouper|naturalday }}</h4>
+		
+			{% for transfer in item.list %}
+			<ul>
+				<li title="{{ transfer.description|truncatewords:10 }}"><em>{{ transfer.amount|floatformat:2 }} &euro;</em> da <em><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></em> a <em><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></em>.</li>
+			</ul>
+			{% endfor %}
+			
+			<hr/>
+			
+		</li>
+
+   	{% endfor %}
+   	</ul>
+
+	{% else %}
+	<p>no latest transfers</p>
+	{% endif %}
+</div>
+
+<div class="hide" id="dialog">
+	<h4>Loading.. <h4>
+</div>
+
+
+</div>
+
+{% endblock %}

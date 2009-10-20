@@ -1,0 +1,72 @@
+{% extends "cash/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container">
+    <hr/>
+    <h1 class="alt">{{ object.name }}</h1>
+    <hr/>
+</div>
+
+
+<div class="container">
+
+    <div class="span-3 colborder">
+        <h3 class="alt">Bilancio: {{ object.balance }}</h3>
+        <h4 class="alt">({{ transfer_list.count }})</h4>
+        
+        <p><a href="{% url sandbox object.id 2008 %}">Analysis 2008</p>
+        
+      	{% regroup months by year as dates %}
+
+        <ul>
+            {% for date in dates %}
+            <li><a href="{% url account-detail-annual object.id date.grouper %}">{{ date.grouper }}</a>
+            
+            	<ul>
+            	{% for day in date.list %}
+            
+            	<li>
+    	        	<a href="{% url account-detail-monthly object.id date.grouper day|date:"m" %}">{{ day|date:"F" }}</a>
+            	</li>
+            	
+            	{% endfor %}
+            	</ul>
+            	
+            </li>
+            {% endfor %}
+        </ul>
+ 
+        
+    </div>
+   
+    <div class="span-20 last">
+    <table>
+    <tr>
+      <th>When</th>
+      <th>Description</th>
+      <th>Source account</th>
+      <th>Destination account</th>
+      <th>Amount</th>
+    </tr>
+    {% if transfer_list %}
+    {% for transfer in transfer_list %}
+    <tr>
+      <td>{{ transfer.validity_date|naturalday}}</td>
+      <td><a href="{% url transfer-detail transfer.id %}">{{ transfer.description|truncatewords:20 }}</a></td>
+      <td><a href="{% url account-detail transfer.source.id %}">{{ transfer.source.name }}</a></td>
+      <td><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination.name }}</a></td>
+      <td>{{ transfer.amount|floatformat:2 }} &euro;</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+      <td colspan="4">No tranfers here.. sorry!</td>
+    </tr>
+    {% endif %}
+    </table>
+
+</div>
+
+{% endblock %}
