@@ -97,6 +97,6 @@ INSTALLED_APPS = (
 
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
-LOGIN_REDIRECT_URL = '/cash/'
+LOGIN_REDIRECT_URL = '/'
 
 STATIC_DOC_ROOT = '/Users/zmoog/code/django/alchemy/_static'

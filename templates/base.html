@@ -28,7 +28,7 @@
 				{% if user.is_authenticated %}
         	    <a href="{% url logout %}">logout</a> |
             	<a href="{% url account %}">account</a> |
-	            <a href="{% url transfer-add %}">transfer</a> |
+	            transfers <a href="{% url transfer-archive %}">archive</a> or <a href="{% url transfer-add %}">add new</a> |
     	        <a href="{% url report %}">report</a> 
 				{% else %}                    
             	<a href="{% url login %}">login</a>
@@ -41,7 +41,7 @@
 	        
 	            {% if user.is_authenticated %}
     	        
-        	    <form method="get" action="{% url transfer-list %}">
+        	    <form method="get" action="{% url transfer-archive %}">
 		    		<input type="text" id="id_search_by_description" name="description">
 			    	<input type="submit" value="Search">
 				</form>
@@ -67,7 +67,7 @@
 
 		<div class="container">
 			<div  class="span-23 last">
-				<h3 class="alt">Grazie per utilizzare questa applicazione web.. this application is proudly <a href="http://www.djangoproject.com">Django powered.</a></h3>
+				<span class="alt">Grazie per utilizzare questa applicazione web.. this application is proudly <a href="http://www.djangoproject.com">Django powered.</a></span>
 			</div>
 		</div>
 		

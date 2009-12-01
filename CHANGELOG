@@ -1,0 +1,20 @@
+0.2:
+
+ * Rimborsi.
+ * Archivio transfer con paginazione, con partizione anno/mese/giorno e ricerca per descrizione e importo.
+ * Report annuale.
+
+
+Backlog:
+
+ * Calcolo incrementale del bilancio degli ‘Account’.
+ * Paginazione dei movimenti di un conto (dipende anche dal calcolo incrementale del bilancio).
+ * Nuovo menu per visualizzare i conti.
+ * Layout meno grezzo.
+ * Attributo ‘active‘ su classe ‘Account‘, per eliminare i conti non più utilizzati da alcuni elenchi..
+ * Utilizzare uno ‘slug’ al posto di ‘id‘ nelle URL di ‘Account‘.
+ * Pagina di ingresso con un riassunto della situazione.
+ * Gestire un profilo con il proprio wallet e conto corrente.
+ * Aggiungere un legame con ‘django.contrib.auth.models.User‘ nella classe ‘cash.models.Transfer‘.
+ * Commenti su ‘Account‘ e ‘Transfer‘.
+ * Tag su ‘Account‘ e ‘Transfer‘.
