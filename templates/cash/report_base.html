@@ -4,7 +4,7 @@
 
 {% block head %}
 
-    <script type="text/javascript" src="/static/fusion/js/FusionCharts.js"></script>
+    <script type="text/javascript" src="/media/static/fusion/js/FusionCharts.js"></script>
     <script type="text/javascript">
       $(document).ready(function()
       {
@@ -21,7 +21,7 @@
         }
  
         $('a#show').click( function() {
-          var chart = new FusionCharts("/static/fusion/charts/FCF_Column3D.swf", 'chart1', '950', '200', '0', '0');
+          var chart = new FusionCharts("/media/static/fusion/charts/FCF_Column3D.swf", 'chart1', '950', '200', '0', '0');
           chart.setDataXML( build_graph($('.total'), {})  );
           chart.render('chart');
           return false;

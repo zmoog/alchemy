@@ -1,6 +1,6 @@
 # Django settings for alchemy project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -9,10 +9,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'db/alchemy.db'             # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
+DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'db_alchemy'             # Or path to database file if using sqlite3.
+DATABASE_USER = 'pg_alchemy'             # Not used with sqlite3.
+DATABASE_PASSWORD = '4lch3my'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
@@ -45,7 +45,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'd()n*zeja_hhr@na6zi(_4db+25ib1v(u8$c7hmsd9n9#=sw0o'
@@ -64,15 +64,16 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'alchemy.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/zmoog/code/django/alchemy/templates',
+    #'/Users/zmoog/code/django/alchemy/templates',
     #'/srv/django/alchemy/templates',
     #'/opt/django-trunk/django/contrib/databrowse/templates',
+    '/home/django/domains/alchemy.selfip.net/alchemy/templates',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS =  (
@@ -92,7 +93,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.humanize',
     'django.contrib.webdesign',
-    'alchemy.cash',
+    'cash',
 )
 
 LOGIN_URL = '/accounts/login/'

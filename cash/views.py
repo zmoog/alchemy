@@ -9,7 +9,7 @@ from django.views.generic import list_detail
 import decimal
 import datetime
 
-from alchemy.cash.models import Account, Transfer, TransferForm
+from cash.models import Account, Transfer, TransferForm
 
 
 def my_object_list(request, queryset, paginate_by, extra_context=dict()):
