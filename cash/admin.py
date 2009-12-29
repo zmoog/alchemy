@@ -1,5 +1,5 @@
 from django.contrib import admin
-from alchemy.cash.models import *
+from cash.models import *
 
 
 class TransferAdmin(admin.ModelAdmin):

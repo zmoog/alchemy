@@ -64,13 +64,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'alchemy.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/zmoog/code/django/alchemy/templates',
+    '/Users/zmoog/code/django/git/alchemy/templates',
     #'/srv/django/alchemy/templates',
     #'/opt/django-trunk/django/contrib/databrowse/templates',
 )
@@ -92,11 +92,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.humanize',
     'django.contrib.webdesign',
-    'alchemy.cash',
+    'cash',
 )
 
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/logout/'
 LOGIN_REDIRECT_URL = '/'
 
-STATIC_DOC_ROOT = '/Users/zmoog/code/django/alchemy/_static'
+STATIC_DOC_ROOT = '/Users/zmoog/code/django/git/alchemy/_static'
