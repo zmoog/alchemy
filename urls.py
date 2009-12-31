@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.contrib import databrowse
 from cash.models import Account, Transfer
-import settings
+from django.conf import settings
 
 admin.autodiscover()
 

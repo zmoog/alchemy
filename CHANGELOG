@@ -1,4 +1,11 @@
-0.2:
+0.3-SNAPSHOT:
+
+ * Miglioramento dell'archivio transfert.
+ * Landing page: elenco delle ultime operazioni effettuate?       
+ * switch grafici da Flash a Javascript (Flot o Highcharts).
+            
+
+0.2-RELEASE (21/12/2009):
 
  * Rimborsi.
  * Archivio transfer con paginazione, con partizione anno/mese/giorno e ricerca per descrizione e importo.
