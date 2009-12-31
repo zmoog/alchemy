@@ -87,7 +87,6 @@
 
         <h3 class="alt">Rebate Tot: {{ rebate_list.tot }}</h3>
  
-        <h3 class="alt">Income Tot: {{ income_list.tot }}</h3>
         <table>
         
             {% for transfer in rebate_list.transfers %}
@@ -112,6 +111,7 @@
             {% endfor %}
         </table>
 
+        <h3 class="alt">Income Tot: {{ income_list.tot }}</h3>
         <table>
         
             {% for transfer in income_list.transfers %}

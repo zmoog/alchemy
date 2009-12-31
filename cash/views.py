@@ -97,7 +97,7 @@ def transfer_add(request):
 
 def report(request):
     now = datetime.datetime.now()
-    return HttpResponseRedirect( reverse('report-month', kwargs=dict(year=now.year, month=now.month)))
+    return HttpResponseRedirect(reverse('report-month', kwargs=dict(year=now.year, month=now.month)))
 
 
 def _do_balance(queryset):
@@ -108,7 +108,12 @@ def _do_balance(queryset):
     expense = { 'tot': 0, 'transfers': [], 'x': {} }
     rebate = { 'tot': 0, 'transfers': []}
 
-    for transfer in queryset:
+    final_queryset = queryset.filter(
+        Q(destination__type='ex') | 
+        Q(source__type='in') | 
+        Q(source__type='ex'))
+ 
+    for transfer in final_queryset:
 
         if transfer.destination.type == 'ex':
             expense['transfers'].append(transfer)
@@ -127,6 +132,12 @@ def _do_balance(queryset):
             rebate['transfers'].append(transfer)
             rebate['tot'] += transfer.amount
 
+            if expense['x'].has_key(transfer.source.id):
+                expense['x'][transfer.source.id]['tot'] -= transfer.amount
+            else:
+                expense['x'][transfer.source.id] = { 'name': transfer.source.name, 'tot': -transfer.amount }
+
+
     else:
         expense['y'] = list()
         for key in expense['x'].keys(): 
@@ -134,28 +145,33 @@ def _do_balance(queryset):
             x['id'] = key
             expense['y'].append(x)
  
-    return income, expense, rebate
+
+    balance = income['tot'] - expense['tot'] + rebate['tot']
+
+    return balance, income, expense, rebate, final_queryset
     
 
 def report_year(request, year):
     """
     Build the year report view
     """
-    base_queryset = Transfer.objects.filter(Q(destination__type='ex') | Q(source__type='in'))
+    #base_queryset = Transfer.objects.filter(Q(destination__type='ex') | Q(source__type='in'))
         
-    queryset = base_queryset.filter(validity_date__year=int(year)).order_by('-validity_date')
+    queryset = Transfer.objects.filter(validity_date__year=int(year)).order_by('-validity_date')
  
-    income, expense, rebate = _do_balance(queryset)
+    balance, income, expense, rebate, qs = _do_balance(queryset)
 
     context = {
         'year': int(year),
         #'month': int(month),
         #'first_day': datetime.date(int(year), int(month), 1),
-        'months': base_queryset.dates('validity_date', 'month', order="DESC"),
+        'months': qs.dates('validity_date', 'month', order="DESC"),
         'expense_list': expense,
         'income_list': income,
-        'balance': income['tot'] - expense['tot']
+        'rebate_list': rebate,
+        'balance': balance
     }
+
 
     return render_to_response(
         'cash/report_year.html', 
@@ -167,25 +183,25 @@ def report_month(request, year, month):
     """
     Build the monthly report view
     """
-    base_queryset = Transfer.objects.filter(
-        Q(destination__type='ex') | 
-        Q(source__type='in') | 
-        Q(source__type='ex'))
+    #base_queryset = Transfer.objects.filter(
+    #    Q(destination__type='ex') | 
+    #    Q(source__type='in') | 
+    #    Q(source__type='ex'))
         
-    queryset = base_queryset.filter(
+    queryset = Transfer.objects.filter(
         validity_date__month=int(month), validity_date__year=int(year)).order_by('-validity_date')
  
-    income, expense, rebate = _do_balance(queryset)
+    balance, income, expense, rebate, qs = _do_balance(queryset)
 
     context = {
         'year': int(year),
         'month': int(month),
         'first_day': datetime.date(int(year), int(month), 1),
-        'months': base_queryset.dates('validity_date', 'month', order="DESC"),
+        'months': qs.dates('validity_date', 'month', order="DESC"),
         'expense_list': expense,
         'income_list': income,
         'rebate_list': rebate,
-        'balance': income['tot'] - expense['tot']
+        'balance': balance
     }
 
     return render_to_response(
@@ -198,24 +214,24 @@ def report_day(request, year, month, day):
     """
     Build the monthly report view
     """
-    base_queryset = Transfer.objects.filter(Q(destination__type='ex') | Q(source__type='in'))
+    #base_queryset = Transfer.objects.filter(Q(destination__type='ex') | Q(source__type='in'))
         
-    queryset = base_queryset.filter(
+    queryset = Transfer.objects.filter(
         validity_date__month=int(month), 
         validity_date__year=int(year),
         validity_date__day=int(day)).order_by('-validity_date')
  
-    income, expense, rebate = _do_balance(queryset)
+    balance, income, expense, rebate, qs = _do_balance(queryset)
 
     context = {
         'year': int(year),
         'month': int(month),
         'day': int(day),        
         'first_day': datetime.date(int(year), int(month), int(day)),
-        'months': base_queryset.dates('validity_date', 'month', order="DESC"),
+        'months': qs.dates('validity_date', 'month', order="DESC"),
         'expense_list': expense,
         'income_list': income,
-        'balance': income['tot'] - expense['tot']
+        'balance': balance
     }
 
     return render_to_response(

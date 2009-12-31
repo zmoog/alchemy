@@ -9,7 +9,7 @@ ALCHEMY_APP=cash
 MESSAGE_SUBJECT="Backup database Alchemy"
 MESSAGE_RECIPIENT=maurizio.branca@gmail.com
 MESSAGE_ATTACHMENT=/tmp/$ALCHEMY_APP.json
-MESSAGE_BODY=bin/backup-message-body.txt
+MESSAGE_BODY=$ALCHEMY_HOME/bin/backup-message-body.txt
 
 #
 # export cash models data into a JSON encoded file using the Django
