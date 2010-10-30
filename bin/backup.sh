@@ -1,6 +1,6 @@
 
-DOMAIN_PATH=/home/django/domains/alchemy.selfip.net
-PYTHON=$DOMAIN_PATH/alchemy.selfip.net/bin/python
+DOMAIN_PATH=/home/django/domains/alchemy.selfip.biz
+PYTHON=$DOMAIN_PATH/alchemy.selfip.biz/bin/python
 
 
 ALCHEMY_HOME=$DOMAIN_PATH/alchemy
@@ -26,7 +26,9 @@ MESSAGE_ATTACHMENT=$MESSAGE_ATTACHMENT.gz
 #
 # Send the data to the destination email recipient.
 #
-mutt -s "$MESSAGE_SUBJECT" -a $MESSAGE_ATTACHMENT $MESSAGE_RECIPIENT < $MESSAGE_BODY
+#echo "mutt -s $MESSAGE_SUBJECT -a $MESSAGE_ATTACHMENT $MESSAGE_RECIPIENT < $MESSAGE_BODY"
+
+mutt -s "$MESSAGE_SUBJECT" -a $MESSAGE_ATTACHMENT -- $MESSAGE_RECIPIENT < $MESSAGE_BODY
 
 #
 # Clear the tmp files.

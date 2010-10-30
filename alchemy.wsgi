@@ -1,4 +1,4 @@
-ALLDIRS = ['/home/django/domains/alchemy.selfip.net/alchemy.selfip.net/lib/python2.5/site-packages']
+ALLDIRS = ['/home/django/domains/alchemy.selfip.biz/alchemy.selfip.biz/lib/python2.6/site-packages']
 # note that the above directory depends on the locale of your virtualenv,
 # and will thus be *different for each project!*
 import os
@@ -18,9 +18,16 @@ for item in list(sys.path):
 sys.path[:0] = new_sys_path
 
 # this will also be different for each project!
-sys.path.append('/home/django/domains/alchemy.selfip.net/alchemy/')
+sys.path.append('/home/django/domains/alchemy.selfip.biz/alchemy/')
 
 os.environ['PYTHON_EGG_CACHE'] = '/home/django/.python-eggs'
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
+_application = django.core.handlers.wsgi.WSGIHandler()
+
+def application(environ, start_response):
+    # trick Satchmo into thinking proxied traffic is coming in via HTTPS
+    # HTTP_X_FORWARDED_SSL is used on WebFaction
+    if environ.get("HTTP_X_FORWARDED_PROTOCOL") == "https" or environ.get("HTTP_X_FORWARDED_SSL") == "on":
+        environ["wsgi.url_scheme"] = "https"
+    return _application(environ, start_response)
