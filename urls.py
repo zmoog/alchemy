@@ -9,18 +9,23 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     # Uncomment this for admin:
-    url(r'^admin/(.*)', admin.site.root, name='admin'),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^databrowse/(.*)', databrowse.site.root, name='databrowse'),
 
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='logout'),
+    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
 
     url(r'^m/(.*)', include('mobile.urls')),
 
-    url(r'^media/static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT, 'show_indexes': True}),
 
     url(r'^', include('cash.urls')),
 )
+
+if settings.DEBUG:
+
+    urlpatterns += patterns('', 
+        url(r'^media/static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT, 'show_indexes': True}),
+    )
 
 databrowse.site.register(Account)
 databrowse.site.register(Transfer)
