@@ -17,8 +17,8 @@
 		<h2 class="alt">login here please</h2>
 		<hr/>
 
-    {% if form.has_errors %}
-    <p class="box">Your username and password didn't match. Please try again.</p>
+    {% if form.errors %}
+    <p class="error">Your username and password didn't match. Please try again.</p>
     {% endif %}
 
 
