@@ -2,6 +2,8 @@
 
 {% load query_string %}
 
+{% block title %}Transfer archive{% endblock %}
+
 {% block head %}
 <script type="text/javascript">
 	$(document).ready( function(){ $('#id_search_by_description').focus()} );
@@ -12,13 +14,7 @@
 
 <div class="container">
 
-<div class="span-2">
-  <p>Cucu</p>
-  <hr/>
-  <p>Qui vorrei scrivere tante cose..</p>
-</div>
-
-<div class="span-16">
+<div class="span-23">
 
   <p>Ci sono ben {{ object_list.count }} trasferimenti.</p>
 
@@ -52,12 +48,6 @@
 <span><a href="?{% get_string "page" page %}">{{ page }}</a></span>
 {% endfor %}
 </p>
-</div>
-
-<div class="span-2">
-  <p>Cucu</p>
-  <hr/>
-  <p>Qui vorrei scrivere tante cose..</p>
 </div>
 
 </div>

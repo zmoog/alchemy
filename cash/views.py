@@ -333,6 +333,7 @@ def account_detail(request, object_id, year=None, month=None):
         transfer_list = transfer_list.filter(validity_date__month=int(month))
 
     context = {
+        'now': datetime.datetime.now(),
         'object': account,
         'transfer_list': transfer_list,
         'months': months

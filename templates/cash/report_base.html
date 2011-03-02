@@ -2,10 +2,15 @@
 
 {% load humanize %}
 
+{% block title %}Report{% endblock %}
+
 {% block head %}
 
     <script type="text/javascript">
-      $(function(){});
+      $(function()
+      {
+        // add your js code here.
+      });
     </script>
  
 {% endblock %}
@@ -15,7 +20,6 @@
 
 <div class="container">
 
-    <a id="show" href="#">Show chart</a>
     <hr/>
     <h2 class="alt">{% block section_title %}{% endblock %}</h2>
     <hr/>

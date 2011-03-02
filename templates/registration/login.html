@@ -1,5 +1,7 @@
     {% extends "base.html" %}
 
+    {% block title %}Login{% endblock %}
+
     {% block head %}
         <script type="text/javascript">
 		$(document).ready(function() {
@@ -10,20 +12,18 @@
 
     {% block content %} 
 
-	<div class="container">
+	<div class="container append-bottom">
 
 
 		<hr/>
 		<h2 class="alt">login here please</h2>
 		<hr/>
 
-    {% if form.errors %}
-    <p class="error">Your username and password didn't match. Please try again.</p>
-    {% endif %}
+	    {% if form.errors %}
+    	<p class="notice">Your username and password didn't match. Please try again.</p>
+	    {% endif %}
 
-
-	
-		<div class="span-7">
+		<div class="prepend-8 span-7 append-8">
 
     <form method="post" action="{% url login %}">{% csrf_token %}
     <table>

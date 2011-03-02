@@ -1,5 +1,8 @@
 {% extends "cash/base.html" %}
+
 {% load humanize %}
+
+{% block title %}Details of {{ object.name }}{% endblock %}
 
 {% block content %}
 
@@ -16,7 +19,7 @@
         <h3 class="alt">Bilancio: {{ object.balance }}</h3>
         <h4 class="alt">({{ transfer_list.count }})</h4>
         
-        <p><a href="{% url sandbox object.id 2008 %}">Analysis 2008</p>
+        <p><a href="{% url sandbox object.id now|date:"Y" %}">Analysis</p>
         
       	{% regroup months by year as dates %}
 

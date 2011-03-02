@@ -1,5 +1,8 @@
 {% extends "base.html" %}
+
 {% load humanize %}
+
+{% block title %}Add new transfer{% endblock %}
 
 {% block head %}
 
@@ -19,7 +22,7 @@
 
 <div class="container">
 
-    <div class="span-12 colborder">
+    <div class="span-15">
 	<hr/>
 	<h3 class="alt">Inserire qui le spese..</h3>
 
@@ -33,13 +36,14 @@
 
 	    </fieldset>
 	</form>
+	
     </div>
 
-
-<div class="span-8">
+	<div class="span-8">
 
 	<hr/>
 	<h3 class="alt">Ultimi trasferimenti.</h3>
+	<hr/>
 
 	{% if latest %}
 
@@ -48,7 +52,7 @@
 	<ul>
 	{% for item in latest_by_day %}
 
-		<li>
+		<li class="append-bottom">
 			<h4 class="alt">{{ item.grouper|naturalday }}</h4>
 		
 			{% for transfer in item.list %}
@@ -56,8 +60,6 @@
 				<li title="{{ transfer.description|truncatewords:10 }}"><em>{{ transfer.amount|floatformat:2 }} &euro;</em> da <em><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></em> a <em><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></em>.</li>
 			</ul>
 			{% endfor %}
-			
-			<hr/>
 			
 		</li>
 
@@ -67,13 +69,14 @@
 	{% else %}
 	<p>no latest transfers</p>
 	{% endif %}
+
+	</div>
+
 </div>
 
 <div class="hide" id="dialog">
 	<h4>Loading.. <h4>
 </div>
 
-
-</div>
 
 {% endblock %}
