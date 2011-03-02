@@ -1,8 +1,15 @@
 0.3-SNAPSHOT:
 
+Fatto:
+
+  * Redesigned the page title pattern (thanks to http://daringfireball.net/2010/12/title_junk)
+
+Da fare:
+
+ * Identificare l'utente creatore e/o modificatore del Transfer.
  * Miglioramento dell'archivio transfert.
  * Landing page: elenco delle ultime operazioni effettuate?       
- * switch grafici da Flash a Javascript (Flot o Highcharts).
+ * Switch grafici da Flash a Javascript (Flot o Highcharts).
             
 
 0.2-RELEASE (21/12/2009):

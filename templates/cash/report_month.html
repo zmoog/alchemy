@@ -1,4 +1,6 @@
 {% extends "cash/report_base.html" %}
 
+{% block title %}Report for {{ first_day|date:"F Y" }}{% endblock %}
+
 {% block section_title %}<h2 class="alt">Mese di {{ first_day|date:"F Y" }}</h2>{% endblock %}
 

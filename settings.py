@@ -1,7 +1,7 @@
 import os
 # Django settings for alchemy project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -31,6 +31,8 @@ TIME_ZONE = 'Europe/Rome'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'it-it'
+
+USE_L10N = True
 
 SITE_ID = 1
 

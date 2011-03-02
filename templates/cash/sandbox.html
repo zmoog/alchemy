@@ -1,36 +1,16 @@
 {% extends "base.html" %}
 
+{% block title %}Analysis of {{ object.name }} in {{ year }}{% endblock %}
+
 {% block head %}
 
-<script type="text/javascript" src="/static/fusion/js/FusionCharts.js"></script>
-<script type="text/javascript" src="/static/js/utils.js"></script>
 <script type="text/javascript">
 	$(document).ready(
-		function() {
-			$('a#show').click( function() {
-
-				var xml = multiseries_chart($('.total'), {
-					'series': [
-						{ 'label': 'deposit', 'color': '2AD62A', 'name': { 'column': 1, 'depth': 2}, 'value': { 'column': 3, 'depth': 1 } },
-						{ 'label': 'withdraw', 'color': 'F1683C',  'name': { 'column': 1, 'depth': 2}, 'value': { 'column': 5, 'depth': 1 } },
-						{ 'label': 'balance', 'color': '1D8BD1',  'name': { 'column': 1, 'depth': 2}, 'value': { 'column': 7, 'depth': 1 } }
-					
-					]
-				});
-
-		    	//var chart = new FusionCharts("/static/fusion/charts/FCF_Column3D.swf", 'chart1', '950', '200', '0', '0');
-		    	var chart = new FusionCharts("/static/fusion/charts/FCF_MSLine.swf", 'chart1', '950', '300', '0', '0');
-        		chart.setDataXML( xml );
-		        chart.render('chart');
-        		return false;
-			})
-		}
 	);
 </script>
 {% endblock %}
 
 {% block content %}
-
 
 <div class="container">
 

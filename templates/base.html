@@ -2,25 +2,32 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
 	<head>
-		<title>Alchemy {% block title %}{% endblock %}</title>
-		
+		<title>{% block title %}Welcome{% endblock %} - Alchemy</title>
+
 		<link rel="stylesheet" type="text/css" href="/media/static/css/blueprint/screen.css" media="screen, projection"></link>
 		<link rel="stylesheet" type="text/css" href="/media/static/css/blueprint/print.css" media="print"></link>		
 		<link rel="stylesheet" type="text/css" href="/media/static/css/blueprint/plugins/fancy-type/screen.css" media="screen"></link>		
-		
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
-		
+
+		<link type="text/css" href="/media/static/css/smoothness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />	
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+
+
+		{% comment %}
+				
 		<style type="text/css">
 			body { margin-top: 1em;}
 		</style>
+
+		{% endcomment %}		
 		
 		{% block head %}{% endblock %}
 	<head>
 
 	<body>
 
-		<div class="container">
+		<div class="container append-bottom">
                 
     	    <div class="span-16">
     	    
@@ -68,7 +75,8 @@
 
 		<div class="container">
 			<div  class="span-23 last">
-				<span class="alt">Grazie per utilizzare questa applicazione web.. this application is proudly <a href="http://www.djangoproject.com">Django powered.</a></span>
+				<hr />
+				<span class="alt">Footer!</span>
 			</div>
 		</div>
 		

@@ -49,8 +49,8 @@ class Transfer(models.Model):
 
 
 class TransferForm(forms.ModelForm):
-    #amount = forms.CharField(widget=forms.TextInput(attrs={'class': 'title'}))
-    #notify_recipients = forms.ModelMultipleChoiceField(queryset=User.objects.all(), required=False)
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, localize=True)
+
     class Meta:
         model = Transfer
 
