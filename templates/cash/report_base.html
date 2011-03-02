@@ -4,31 +4,8 @@
 
 {% block head %}
 
-    <script type="text/javascript" src="/media/static/fusion/js/FusionCharts.js"></script>
     <script type="text/javascript">
-      $(document).ready(function()
-      {
-
-        var build_graph = function (rows, context) {
-          var header = "<graph caption='Monthly Unit Sales' xAxisName='Month' yAxisName='Units' showNames='1' decimalPrecision='0' formatNumberScale='0'>";
-        
-          //var rows = "<set name='Sep' value='376' color='B3AACC'></set>";
-          var footer = "</graph>";
-          var xml = header;
-          rows.each( function(i,e) { xml += "<set name='" + escape(e.childNodes[1].childNodes[0].childNodes[0].nodeValue) + "' value='" + e.childNodes[3].firstChild.nodeValue+ "' color='B3AACC' />" } )       
-          xml += footer;
-          return xml;
-        }
- 
-        $('a#show').click( function() {
-          var chart = new FusionCharts("/media/static/fusion/charts/FCF_Column3D.swf", 'chart1', '950', '200', '0', '0');
-          chart.setDataXML( build_graph($('.total'), {})  );
-          chart.render('chart');
-          return false;
-        });
-
- 
-      });
+      $(function(){});
     </script>
  
 {% endblock %}
