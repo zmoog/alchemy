@@ -107,3 +107,9 @@ LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
 
 STATIC_DOC_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '_static')
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
