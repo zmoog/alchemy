@@ -26,8 +26,5 @@ import django.core.handlers.wsgi
 _application = django.core.handlers.wsgi.WSGIHandler()
 
 def application(environ, start_response):
-    # trick Satchmo into thinking proxied traffic is coming in via HTTPS
-    # HTTP_X_FORWARDED_SSL is used on WebFaction
-    if environ.get("HTTP_X_FORWARDED_PROTOCOL") == "https" or environ.get("HTTP_X_FORWARDED_SSL") == "on":
-        environ["wsgi.url_scheme"] = "https"
+    environ['wsgi.url_scheme'] = environ.get('HTTP_X_URL_SCHEME', 'http')
     return _application(environ, start_response)
