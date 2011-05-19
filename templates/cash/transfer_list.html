@@ -36,8 +36,8 @@
 	<tr>
 		<td>{{ object.validity_date}}</td>
 		<td><a href="{% url transfer-detail object.id %}">{{ object.description }}</a></td>
-		<td>{{ object.source }}</td/>
-		<td>{{ object.destination }}</td/>
+		<td><a href="{% url account-detail object.source.id %}">{{ object.source }}</a></td/>
+		<td><a href="{% url account-detail object.destination.id %}">{{ object.destination }}</a></td/>
 		<td><span style="color: grey;">&euro;</span> {{ object.amount|floatformat:2 }}</td>
 	</tr>		
 	{% endfor %}
