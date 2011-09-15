@@ -11,6 +11,10 @@
     {% endblock %}
 
     {% block content %} 
+  
+         <div class="page-header">
+           <h1>Login</h1>
+         </div>
 
 	<div class="row">
 	    {% if form.errors %}
@@ -25,7 +29,6 @@
 
             <form method="post" action="{% url login %}">{% csrf_token %}
                 <fieldset>
-                    <legend>Login</legend>
                     <div class="clearfix">
                         <label for="id_username">Username</label>
                         <div class="input">{{ form.username }}</div>

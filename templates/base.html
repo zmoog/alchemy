@@ -1,24 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
+<!DOCTYPE html>
+<html lang="en">
     <head>
 	<title>{% block title %}Welcome{% endblock %} - Alchemy</title>
 
 	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/bootstrap-1.2.0.min.css" media="screen"></link>		
-        <link type="text/css" href="/media/css/smoothness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+        {% comment %}
+        <link type="text/css" href="/media/css/smoothness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/i18n/jquery-ui-i18n.min.js"></script>
+        {% endcomment %}
 
+	<script type="text/javascript" src="/media/js/jquery/1.6.2.js"></script>
 	<script type="text/javascript" src="/media/js/highcharts.js"></script>
 
 	{% comment %}
-				
 	<style type="text/css">
 		body { margin-top: 1em;}
 	</style>
-
 	{% endcomment %}		
 		
         <script type="text/javascript">
@@ -29,124 +28,84 @@
 
 	{% block head %}{% endblock %}
 
-    <head>
+    </head>
 
     <body>
 
-        <div class="container">
 
-            <div class="topbar-wrapper" style="z-index: 5;">
-              <div class="topbar">
-                <div class="topbar-inner">
-                  <div class="container">
-                    <h3><a href="{% url cash-home %}">alchemy</a></h3>
-                    <ul class="nav">
-                      {% if user.is_authenticated %}
-                      <li><a href="{% url account %}">Accounts</a></li>
-                      
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">Transfers</a>
-          
-                        <ul class="dropdown-menu">
-                          <li><a href="{% url transfer-archive %}">Archive</a></li>
-                          <li><a href="{% url transfer-add %}">Add</a></li>
-                        </ul>
-                        <li><a href="{% url report %}">Report</a></li>
-                      </li>
-                      {% endif %}
-          
-                    </ul>
-                    {% if user.is_authenticated %}
-                    <form method="GET" action="{% url transfer-archive %}">
-                      <input type="text" name="description" placeholder="Search" />
-                    </form>
-                    {% endif %}
-                    <ul class="nav secondary-nav">
-
-                      {% if user.is_authenticated %}
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">{{ user }}</a>
-                        <ul class="dropdown-menu">
-                          <li><a href="/admin/">Admin</a></li>
-                          <li><a href="{% url logout %}">Sign out</a></li>
-                        </ul>
-                      </li>
-                      {% else %}
-                      <li><a href="{% url login %}">Login</a></li>
-                      {% endif %}
-                    </ul>
-          
-                  </div>
-                </div><!-- /topbar-inner -->
-              </div><!-- /topbar -->
-            </div><!-- /topbar-wrapper -->    
-            
-{% comment %}
-            <div class="row">
-                <div class="span8 columns">
-    	            <a href="{% url cash-home %}">home</a>
-                    {% if user.is_authenticated %}
-                	 | <a href="{% url account %}">account</a> |
-    	         transfers <a href="{% url transfer-archive %}">archive</a> or <a href="{% url transfer-add %}">add new</a> |
-        	         <a href="{% url report %}">report</a> 
-                    {% endif %}
-    	        </div>
-                <div class="span6 columns">
-                    {% if user.is_authenticated %}
-            	<form method="get" action="{% url transfer-archive %}">
-    	            <input type="text" id="id_search_by_description" name="description">
-    		    <input type="submit" value="Search">
-    	        </form>
-          		{% else %}
-                    &nbsp;
-          		{% endif %}
-                </div>
-                <div class="span2 columns">
+        <!-- Topbar
+           ================================================== --> 
+           <div class="topbar-wrapper">
+             <div class="topbar">
+               <div class="topbar-inner">
+                 <div class="container">
+                   <h3><a href="{% url cash-home %}">alchemy</a></h3>
+                   <ul class="nav">
                      {% if user.is_authenticated %}
-                     <a href="/admin/">admin</a> |
-            	 <a href="{% url logout %}">logout</a>
-                     {% else %}                    
-                     <a href="{% url login %}">login</a>
-    	         {% endif %}
-                </div>
-            </div><!-- row -->
-    
-    	    {% if messages %}
-    	    <div class="row">
-                <div class="alert-message warning">
-        	    {% for message in messages %}
-                    ||{{ message }}
-                    {% endfor %}
-                </div>
-    	    </div>
-    	    {% endif %}
-    		
-{% endcomment %}
+                     <li><a href="{% url account %}">Accounts</a></li>
+                     
+                     <li class="dropdown">
+                       <a href="#" class="dropdown-toggle">Transfers</a>
+         
+                       <ul class="dropdown-menu">
+                         <li><a href="{% url transfer-archive %}">Archive</a></li>
+                         <li><a href="{% url transfer-add %}">Add</a></li>
+                       </ul>
+                       <li><a href="{% url report %}">Report</a></li>
+                     </li>
+                     {% endif %}
+         
+                   </ul>
+                   {% if user.is_authenticated %}
+                   <form method="GET" action="{% url transfer-archive %}">
+                     <input type="text" name="description" placeholder="Search" />
+                   </form>
+                   {% endif %}
+                   <ul class="nav secondary-nav">
 
-
-    	{% block content %}{% endblock %}
-    
-    	<div class="container">
-    		<div  class="span-23 last">
-    		    <hr />
-    		    <span class="alt">Footer!</span>
-    		</div>
-    	</div>
-    		
-    		
-    	{% comment %}
-            <script type="text/javascript">
-            	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-                	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-             </script>
-             <script type="text/javascript">
-             	var pageTracker = _gat._getTracker("UA-4334580-1");
-                	pageTracker._initData();
-                	pageTracker._trackPageview();
-             </script>
-    	{% endcomment %}
-    	
-    
-        </div><!-- bootstrap container -->
+                     {% if user.is_authenticated %}
+                     <li class="dropdown">
+                       <a href="#" class="dropdown-toggle">{{ user }}</a>
+                       <ul class="dropdown-menu">
+                         <li><a href="/admin/">Admin</a></li>
+                         <li><a href="{% url logout %}">Sign out</a></li>
+                       </ul>
+                     </li>
+                     {% else %}
+                     <li><a href="{% url login %}">Login</a></li>
+                     {% endif %}
+                   </ul>
+         
+                 </div><!-- /container -->
+               </div><!-- /topbar-inner -->
+             </div><!-- /topbar -->
+        </div><!-- /topbar-wrapper -->    
+           
+        <div class="container">
+        
+            <div class="row" style="padding-top: 60px">
+               	{% block content %}{% endblock %}
+            </div>
+        
+            <div id="footer">
+        	    <div class="span16 columns">
+                        <span class="alt">Footer!</span>
+               	    </div>
+            </div>
+        
+        </div>
+        		
+        	{% comment %}
+                <script type="text/javascript">
+                	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+                    	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+                 </script>
+                 <script type="text/javascript">
+                 	var pageTracker = _gat._getTracker("UA-4334580-1");
+                    	pageTracker._initData();
+                    	pageTracker._trackPageview();
+                 </script>
+        	{% endcomment %}
+        	
     </body>
 </html>
