@@ -1,3 +1,4 @@
+# - encodig: utf8 -
 from django.db import models
 from django import forms 
 from django.contrib.auth.models import User
@@ -33,7 +34,7 @@ class Transfer(models.Model):
     """
     Trasferimento di denaro da un Account ad un'altro.
     """
-    amount = models.DecimalField(max_digits = 10, decimal_places = 2)
+    amount = models.DecimalField(max_digits = 10, decimal_places = 2, help_text="Quantita di denaro da trasferire.")
     source = models.ForeignKey(Account, related_name = 'source')
     destination = models.ForeignKey(Account, related_name = 'destination')
     description = models.TextField()
@@ -49,7 +50,7 @@ class Transfer(models.Model):
 
 
 class TransferForm(forms.ModelForm):
-    amount = forms.DecimalField(max_digits=10, decimal_places=2, localize=True)
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, help_text="Quantita")
 
     class Meta:
         model = Transfer

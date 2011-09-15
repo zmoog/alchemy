@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.views.generic import list_detail
+from django.contrib import messages
 
 import decimal
 import datetime
@@ -69,7 +70,8 @@ def transfer(request, object_id):
         form = TransferForm(request.POST, instance=transfer)   
         if form.is_valid():
             form.save()
-            request.user.message_set.create(message="Transfer aggiornato con successo")
+            #request.user.message_set.create(message="Transfer aggiornato con successo")
+            messages.success(request, 'Transfer updated successfully.')
             return HttpResponseRedirect(reverse('transfer-detail', kwargs=dict(object_id=transfer.id))) # redirect after post
 
     else:

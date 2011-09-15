@@ -3,7 +3,9 @@
     <head>
 	<title>{% block title %}Welcome{% endblock %} - Alchemy</title>
 
-	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/bootstrap-1.2.0.min.css" media="screen"></link>		
+	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/bootstrap-1.2.0.min.css"></link>		
+	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/assets/docs.css"></link>		
+	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/assets/js/google-code-prettify/prettify.css"></link>		
 
         {% comment %}
         <link type="text/css" href="/media/css/smoothness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
@@ -35,7 +37,7 @@
 
         <!-- Topbar
            ================================================== --> 
-           <div class="topbar-wrapper">
+
              <div class="topbar">
                <div class="topbar-inner">
                  <div class="container">
@@ -79,21 +81,27 @@
                  </div><!-- /container -->
                </div><!-- /topbar-inner -->
              </div><!-- /topbar -->
-        </div><!-- /topbar-wrapper -->    
+
+        <section id="content">
            
         <div class="container">
         
-            <div class="row" style="padding-top: 60px">
+{% if messages %}
+    {% for message in messages %}
+<div class="alert-message success">
+    <a class="close" href="#">×</a> 
+    <p><strong>Well done!</strong> {{ message }}</p>
+</div>
+    {% endfor %}
+{% endif %}
+
+            <div class="row">
                	{% block content %}{% endblock %}
             </div>
-        
-            <div id="footer">
-        	    <div class="span16 columns">
-                        <span class="alt">Footer!</span>
-               	    </div>
-            </div>
-        
+       
         </div>
+
+	</section>
         		
         	{% comment %}
                 <script type="text/javascript">
@@ -107,5 +115,19 @@
                  </script>
         	{% endcomment %}
         	
+    <div id="footer">
+      <div class="inner">
+        <div class="container">
+          <p class="right"><a href="#">Back to top</a></p>
+
+          <p>
+            Designed and built with all the love in the world <a href="http://twitter.com/twitter" target="_blank">@twitter</a> by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.<br />
+            Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+
     </body>
 </html>
