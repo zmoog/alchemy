@@ -17,7 +17,7 @@
 
     <div class="span-3 colborder">
         <h3 class="alt">Bilancio: {{ object.balance }}</h3>
-        <h4 class="alt">({{ transfer_list.count }})</h4>
+        <h4 class="alt">({{ count }})</h4>
         
         <p><a href="{% url sandbox object.id now|date:"Y" %}">Analysis</p>
         
