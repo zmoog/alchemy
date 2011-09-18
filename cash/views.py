@@ -4,7 +4,9 @@ from django import forms
 from django.db.models import Q
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.views.generic import list_detail
+from django.contrib import messages
 
 import decimal
 import datetime
@@ -12,48 +14,41 @@ import datetime
 from cash.models import Account, Transfer, TransferForm
 
 
-def my_object_list(request, queryset, paginate_by, extra_context=dict()):
-
-    #queryset = Transfer.objects.filter().order_by('-validity_date')
-    
-    if request.GET.has_key('description'):
-        queryset = queryset.filter(description__icontains=request.GET['description'])
-
-    return list_detail.object_list(request, queryset=queryset, paginate_by=paginate_by, extra_context=extra_context, page=None)
-        
-
 def transfer_archive(request, queryset, paginate_by):
     """
     """
-    #queryset = Transfer.objects.all().order_by('-validity_date')
+ 
+    if request.GET.has_key('description'):
+        queryset = queryset.filter(description__icontains=request.GET['description'])
+
+    paginator = Paginator(queryset, paginate_by) # Show 'paginate_by' transfers per page
     
-    return my_object_list(request, 
-       queryset, 
-       paginate_by, 
-       extra_context=dict(years=queryset.dates('validity_date', 'year', order='DESC'))
-       )
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    # If page request (9999) is out of range, deliver last page of results.
+    try:
+       transfers = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+       transfers = paginator.page(paginator.num_pages)
+
+    return render_to_response('cash/transfer_list.html', {'transfers': transfers}, context_instance=RequestContext(request)) 
 
 
 def transfer_archive_year(request, year, queryset, paginate_by):
-    """
-    """
-    return my_object_list(request, 
-        queryset.filter(validity_date__year=int(year)), paginate_by)
+    return transfer_archive(request, queryset.filter(validity_date__year=int(year)), paginate_by)
 
 
 def transfer_archive_month(request, year, month, queryset, paginate_by):
-    """
-    """
-    return my_object_list(request, 
-        queryset.filter(
+    return transfer_archive(request, queryset.filter(
             validity_date__year=int(year),
             validity_date__month=int(month)), paginate_by)
 
 
 def transfer_archive_day(request, year, month, day, queryset, paginate_by):
-    """
-    """    
-    return my_object_list(request,
+    return transfer_archive(request,
         queryset.filter(
             validity_date__year=int(year),
             validity_date__month=int(month),
@@ -69,7 +64,8 @@ def transfer(request, object_id):
         form = TransferForm(request.POST, instance=transfer)   
         if form.is_valid():
             form.save()
-            request.user.message_set.create(message="Transfer aggiornato con successo")
+            #request.user.message_set.create(message="Transfer aggiornato con successo")
+            messages.success(request, 'Transfer updated successfully.')
             return HttpResponseRedirect(reverse('transfer-detail', kwargs=dict(object_id=transfer.id))) # redirect after post
 
     else:

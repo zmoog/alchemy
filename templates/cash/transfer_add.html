@@ -8,11 +8,12 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#id_validity_date').datepicker($.datepicker.regional['it'], {'dateFormat': 'yy-mm-dd'});
+		// $('#id_validity_date').datepicker($.datepicker.regional['it'], {'dateFormat': 'yy-mm-dd'});
 		$('#id_amount').focus();
         	$('.message').animate({opacity: 1.0}, 5000).fadeOut('slow');
 		$('<br/>').appendTo($('label'))
 		$('fieldset input[type=text]').addClass('text');
+                $('a.close').parent().click(function(e) { $(this).fadeOut() });
 	});
 </script>
 
@@ -20,30 +21,59 @@
 
 {% block content %}
 
-<div class="container">
+<div class="row">
 
-    <div class="span-15">
-	<hr/>
-	<h3 class="alt">Inserire qui le spese..</h3>
+    <div class="page-header">
+        <h1>Add new transfer</h1>
+    </div>
+ 
+    <div class="span10 columns">
 
-	<form action="" method="post">{% csrf_token %}
+            <form method="post" action="">{% csrf_token %}
+                <fieldset>
+                    {% for field in form %}
+                    <div class="clearfix {% if field.errors %}error{% endif %}" title="{{ field.help_text }}">
+                        {{ field.label_tag }}
+                        <div class="input">
+                            {{ field }}
+                            {% for error in field.errors %}
+                            <span class="help-inline">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
 
-	    <fieldset>
-	    
-    		{{ form.as_p }}
+                    <div class="actions">
+                        <input class="btn primary" type="submit" value="Save" />
+                        <input class="btn" type="reset" value="Reset" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
+ 
+<!--
+                    <div class="clearfix">
+                        <label for="id_username">Username</label>
+                        <div class="input">{{ form.username }}</div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="id_password">Password</label>
+                        <div class="input">{{ form.password }}</div>
+                    </div>
 
-	        <input type="submit" value="Save" />
+                    <div class="actions">
+                        <input class="btn primary" type="submit" value="login" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
 
-	    </fieldset>
-	</form>
-	
+
+-->
+                </fieldset>
+            </form>
+
     </div>
 
-	<div class="span-8">
+	<div class="span6 columns">
 
-	<hr/>
-	<h3 class="alt">Ultimi trasferimenti.</h3>
-	<hr/>
+	<h3>Latest trasfers</h3>
 
 	{% if latest %}
 
@@ -73,10 +103,5 @@
 	</div>
 
 </div>
-
-<div class="hide" id="dialog">
-	<h4>Loading.. <h4>
-</div>
-
 
 {% endblock %}

@@ -11,7 +11,7 @@ account_info = {
 
 transfer_list_info = {
     'queryset': Transfer.objects.all().order_by('-validity_date'),
-    'paginate_by': 15
+    'paginate_by': 10
 }
 
 urlpatterns = patterns('',

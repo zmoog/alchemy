@@ -1,93 +1,133 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
+<!DOCTYPE html>
+<html lang="en">
     <head>
-		<title>{% block title %}Welcome{% endblock %} - Alchemy</title>
+	<title>{% block title %}Welcome{% endblock %} - Alchemy</title>
 
-		<link rel="stylesheet" type="text/css" href="/media/css/blueprint/screen.css" media="screen, projection"></link>
-		<link rel="stylesheet" type="text/css" href="/media/css/blueprint/print.css" media="print"></link>		
-		<link rel="stylesheet" type="text/css" href="/media/css/blueprint/plugins/fancy-type/screen.css" media="screen"></link>		
+	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/bootstrap-1.2.0.min.css"></link>		
+	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/assets/docs.css"></link>		
+	<link rel="stylesheet" type="text/css" href="/media/css/bootstrap/assets/js/google-code-prettify/prettify.css"></link>		
 
-		<link type="text/css" href="/media/css/smoothness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />	
+        {% comment %}
+        <link type="text/css" href="/media/css/smoothness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/i18n/jquery-ui-i18n.min.js"></script>
+        {% endcomment %}
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/i18n/jquery-ui-i18n.min.js"></script>
+	<script type="text/javascript" src="/media/js/jquery/1.6.2.js"></script>
+	<script type="text/javascript" src="/media/js/highcharts.js"></script>
 
-		<script type="text/javascript" src="/media/js/highcharts.js"></script>
-
-		{% comment %}
-				
-		<style type="text/css">
-			body { margin-top: 1em;}
-		</style>
-
-		{% endcomment %}		
+	{% comment %}
+	<style type="text/css">
+		body { margin-top: 1em;}
+	</style>
+	{% endcomment %}		
 		
-		{% block head %}{% endblock %}
-    <head>
+        <script type="text/javascript">
+            $(function(){
+                $('.dropdown-toggle, menu').click(function(e) { $(this).parent('li').toggleClass('open'); return false;})
+            });
+        </script>
+
+	{% block head %}{% endblock %}
+
+    </head>
 
     <body>
 
-        <div class="container prepend-top append-bottom">
-             <div class="span-12">
-	         <a href="{% url cash-home %}">home</a>
-                 {% if user.is_authenticated %}
-            	 | <a href="{% url account %}">account</a> |
-	         transfers <a href="{% url transfer-archive %}">archive</a> or <a href="{% url transfer-add %}">add new</a> |
-    	         <a href="{% url report %}">report</a> 
-                 {% endif %}
-	    </div>
-            <div class="span-9">
-                {% if user.is_authenticated %}
-        	<form method="get" action="{% url transfer-archive %}">
-	            <input type="text" id="id_search_by_description" name="description">
-		    <input type="submit" value="Search">
-	        </form>
-      		{% else %}
-                &nbsp;
-      		{% endif %}
+
+        <!-- Topbar
+           ================================================== --> 
+
+             <div class="topbar">
+               <div class="topbar-inner">
+                 <div class="container">
+                   <h3><a href="{% url cash-home %}">alchemy</a></h3>
+                   <ul class="nav">
+                     {% if user.is_authenticated %}
+                     <li><a href="{% url account %}">Accounts</a></li>
+                     
+                     <li class="dropdown">
+                       <a href="#" class="dropdown-toggle">Transfers</a>
+         
+                       <ul class="dropdown-menu">
+                         <li><a href="{% url transfer-archive %}">Archive</a></li>
+                         <li><a href="{% url transfer-add %}">Add</a></li>
+                       </ul>
+                       <li><a href="{% url report %}">Report</a></li>
+                     </li>
+                     {% endif %}
+         
+                   </ul>
+                   {% if user.is_authenticated %}
+                   <form method="GET" action="{% url transfer-archive %}">
+                     <input type="text" name="description" placeholder="Search" />
+                   </form>
+                   {% endif %}
+                   <ul class="nav secondary-nav">
+
+                     {% if user.is_authenticated %}
+                     <li class="dropdown">
+                       <a href="#" class="dropdown-toggle">{{ user }}</a>
+                       <ul class="dropdown-menu">
+                         <li><a href="/admin/">Admin</a></li>
+                         <li><a href="{% url logout %}">Sign out</a></li>
+                       </ul>
+                     </li>
+                     {% else %}
+                     <li><a href="{% url login %}">Login</a></li>
+                     {% endif %}
+                   </ul>
+         
+                 </div><!-- /container -->
+               </div><!-- /topbar-inner -->
+             </div><!-- /topbar -->
+
+        <section id="content">
+           
+        <div class="container">
+        
+{% if messages %}
+    {% for message in messages %}
+<div class="alert-message success">
+    <a class="close" href="#">×</a> 
+    <p><strong>Well done!</strong> {{ message }}</p>
+</div>
+    {% endfor %}
+{% endif %}
+
+            <div class="row">
+               	{% block content %}{% endblock %}
             </div>
-            <div class="span-3 last">
-                 {% if user.is_authenticated %}
-                 <a href="/admin/">admin</a> |
-        	 <a href="{% url logout %}">logout</a>
-                 {% else %}                    
-                 <a href="{% url login %}">login</a>
-	         {% endif %}
-            </div>
+       
         </div>
 
-	{% if messages %}
-	<div class="container">
-    	    	    {% for message in messages %}
-		    <div class="span-10 message success">{{ message }}</div>
-        	    {% endfor %}
-		</div>
-		{% endif %}
-		
-		
-		{% block content %}{% endblock %}
+	</section>
+        		
+        	{% comment %}
+                <script type="text/javascript">
+                	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+                    	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+                 </script>
+                 <script type="text/javascript">
+                 	var pageTracker = _gat._getTracker("UA-4334580-1");
+                    	pageTracker._initData();
+                    	pageTracker._trackPageview();
+                 </script>
+        	{% endcomment %}
+        	
+    <div id="footer">
+      <div class="inner">
+        <div class="container">
+          <p class="right"><a href="#">Back to top</a></p>
 
-		<div class="container">
-			<div  class="span-23 last">
-				<hr />
-				<span class="alt">Footer!</span>
-			</div>
-		</div>
-		
-		
-		{% comment %}
-          	<script type="text/javascript">
-            		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          	</script>
-          	<script type="text/javascript">
-            		var pageTracker = _gat._getTracker("UA-4334580-1");
-            		pageTracker._initData();
-            		pageTracker._trackPageview();
-          	</script>
-		{% endcomment %}
-	
-	</body>
+          <p>
+            Designed and built with all the love in the world <a href="http://twitter.com/twitter" target="_blank">@twitter</a> by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.<br />
+            Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    </body>
 </html>

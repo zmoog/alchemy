@@ -11,34 +11,43 @@
     {% endblock %}
 
     {% block content %} 
+  
+         <div class="page-header">
+           <h1>Login</h1>
+         </div>
 
-	<div class="container append-bottom">
-
-
-		<hr/>
-		<h2 class="alt">login here please</h2>
-		<hr/>
-
+	<div class="row">
 	    {% if form.errors %}
-    	<p class="notice">Your username and password didn't match. Please try again.</p>
+            <div class="alert-message error">
+                <a class="close" href="#">&times;</a>
+    	        <p><strong>Doh!</strong> Your username and password didn't match. Please try again.</p>
+            </div>
 	    {% endif %}
+        </div>
 
-		<div class="prepend-8 span-7 append-8">
+        <div class="row">
 
-    <form method="post" action="{% url login %}">{% csrf_token %}
-    <table>
-    <tr><td><label for="id_username">Username:</label></td><td>{{ form.username }}</td></tr>
-    <tr><td><label for="id_password">Password:</label></td><td>{{ form.password }}</td></tr>
-    </table>
+            <form method="post" action="{% url login %}">{% csrf_token %}
+                <fieldset>
+                    <div class="clearfix">
+                        <label for="id_username">Username</label>
+                        <div class="input">{{ form.username }}</div>
+                    </div>
+                    <div class="clearfix">
+                        <label for="id_password">Password</label>
+                        <div class="input">{{ form.password }}</div>
+                    </div>
 
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
-    </form>
+                    <div class="actions">
+                        <input class="btn primary" type="submit" value="login" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
+                </fieldset>
+            </form>
 
+        </div>
 
-		</div>
-
-	</div>
+    </div>
 
     {% endblock %}
 
