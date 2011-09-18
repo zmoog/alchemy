@@ -18,7 +18,6 @@
          </div>
 </div><!-- span16 -->
 
-
 <div class="span16 columns">
 
     <table class="zebra-striped">
@@ -30,7 +29,7 @@
 	    <th>amount</th>
 	</tr>
 	
-	{% for object in object_list %}
+	{% for object in transfers.object_list %}
 	<tr>
 		<td>{{ object.validity_date|date:"j b"}}</td>
 		<td><a href="{% url transfer-detail object.id %}">{{ object.description }}</a></td>
@@ -41,11 +40,13 @@
 	{% endfor %}
     </table>
 
-    <p>
-        {% for page in page_range %}
-        <span><a href="?{% get_string "page" page %}">{{ page }}</a></span>
-        {% endfor %}
-    </p>
+    <div class="pagination">
+        <ul>
+            <li class="prev{% if not transfers.has_previous %} disabled{% endif %}"><a href="?page={{ transfers.previous_page_number }}">&larr; Previous</a></li>
+            <li class="active"><a href="#">{{ transfers.number }}</a></li>
+            <li class="next{% if not transfers.has_next %} disabled{% endif %}"><a href="?page={{ transfers.next_page_number }}">Next &rarr;</a></li>
+        </ul>
+    </div>
 
 </div><!-- span16 columns -->
     
