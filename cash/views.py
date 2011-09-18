@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
 from django import forms 
-from django.db.models import Q
+from django.db import transaction
+from django.db.models import Q, Sum
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -55,7 +56,7 @@ def transfer_archive_day(request, year, month, day, queryset, paginate_by):
             validity_date__day=int(day)), paginate_by)
 
 
-
+@transaction.commit_on_success()
 def transfer(request, object_id):
     latest = Transfer.objects.order_by('-created_on')[:10] 
     transfer = get_object_or_404(Transfer, pk=object_id)
@@ -66,6 +67,7 @@ def transfer(request, object_id):
             form.save()
             #request.user.message_set.create(message="Transfer aggiornato con successo")
             messages.success(request, 'Transfer updated successfully.')
+            _update_balance([form.instance.source, form.instance.destination])
             return HttpResponseRedirect(reverse('transfer-detail', kwargs=dict(object_id=transfer.id))) # redirect after post
 
     else:
@@ -74,6 +76,7 @@ def transfer(request, object_id):
     return render_to_response('cash/transfer_add.html', {'form': form, 'latest': latest}, context_instance=RequestContext(request))
 
 
+@transaction.commit_on_success()
 def transfer_add(request):
     """
     View for handling the creation/modify of the Transfer objects.
@@ -83,6 +86,7 @@ def transfer_add(request):
         form = TransferForm(request.POST)
         if form.is_valid():
             form.save()
+            _update_balance([form.instance.source, form.instance.destination])
             #request.user.message_set.create(message="%s" % form['notify_recipients'].field)
             return HttpResponseRedirect(reverse('transfer-add')) # redirect after post
     else:
@@ -305,20 +309,6 @@ def account_detail(request, object_id, year=None, month=None):
     transfer_list = Transfer.objects.filter(
             Q(source__id = object_id) | Q(destination__id = object_id)
         ).order_by('-validity_date')
-   
-    # Aggiornamento del bilancio dell'Account
-    # FIXME: occorre sostituire questo metodo con qualcosa di diverso..
-    if not year and not month:
-    
-        account.balance = decimal.Decimal('0')
-
-        for transfer in transfer_list: 
-            if account.id == transfer.destination.id:
-                account.balance += transfer.amount
-            else:
-                account.balance -= transfer.amount
-   
-        account.save()
 
     months = transfer_list.dates('validity_date', 'month', order="DESC")
 
@@ -331,7 +321,8 @@ def account_detail(request, object_id, year=None, month=None):
     context = {
         'now': datetime.datetime.now(),
         'object': account,
-        'transfer_list': transfer_list,
+        'transfer_list': transfer_list[:10],
+        'count': transfer_list.count(),
         'months': months
     }
     
@@ -435,3 +426,27 @@ def _sandbox(request, object_id):
     context = { 'account': account, 'tot': tot }
     
     return render_to_response('cash/sandbox.html', context, context_instance=RequestContext(request))
+
+
+def _update_balance(account_list):
+    """
+    Update the balance for each Account in the list given as a parameter.
+
+    The current implementation uses a sum() aggregation function to obtain INs and OUTs transfer sums
+    and then apply this formula: 
+
+        balance = INs - OUTs.
+
+    """
+
+    for account in account_list:
+ 
+        print('current %s balance is %f' % (account.name, account.balance))
+        ins = Transfer.objects.filter(Q(destination__id=account.id)).aggregate(Sum('amount'))['amount__sum'] or 0
+        outs = Transfer.objects.filter(Q(source__id=account.id)).aggregate(Sum('amount'))['amount__sum'] or 0
+        balance = ins - outs
+        print('in %f and out %f, so new balance for %s is %f' % (ins, outs, account, balance))
+        account.balance = balance
+        account.save() 
+
+  
