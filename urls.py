@@ -3,8 +3,40 @@ from django.contrib import admin
 from django.contrib import databrowse
 from cash.models import Account, Transfer
 from django.conf import settings
+from tastypie import fields
+from tastypie.resources import ModelResource
+from tastypie.api import Api
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
+from tastypie.authentication import ApiKeyAuthentication
 
 admin.autodiscover()
+
+class AccountResource(ModelResource):
+    class Meta:
+        queryset = Account.objects.all()
+        filtering = {
+            'name': ALL
+        }
+        excludes = ['balance']
+        #authentication = ApiKeyAuthentication()
+
+class TransferResource(ModelResource):
+    source = fields.ForeignKey(AccountResource, 'source', full=True)
+    destination = fields.ForeignKey(AccountResource, 'destination', full=True)
+    class Meta:
+        queryset = Transfer.objects.all()
+        filtering = {
+            'description': ALL,
+            'amount': ALL
+        }
+
+
+
+v1_api = Api(api_name='v1')
+v1_api.register(AccountResource())
+v1_api.register(TransferResource())
+
+
 
 urlpatterns = patterns('',
 
@@ -17,6 +49,7 @@ urlpatterns = patterns('',
 
     url(r'^m/', include('mobile.urls')),
 
+    url(r'^api/', include(v1_api.urls)),
 
     url(r'^', include('cash.urls')),
 )

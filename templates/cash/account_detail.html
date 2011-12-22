@@ -6,18 +6,19 @@
 
 {% block content %}
 
-<div class="container">
-    <hr/>
-    <h1 class="alt">{{ object.name }}</h1>
-    <hr/>
+<div class="row">
+
+         <div class="page-header">
+		<h1>{{ object.name}}</h1>
+         </div>
 </div>
 
 
-<div class="container">
+<div class="row">
 
-    <div class="span-3 colborder">
-        <h3 class="alt">Bilancio: {{ object.balance }}</h3>
-        <h4 class="alt">({{ count }})</h4>
+    <div class="span2 columns">
+        <h3>Bilancio: {{ object.balance }}</h3>
+        <h4>({{ count }})</h4>
         
         <p><a href="{% url sandbox object.id now|date:"Y" %}">Analysis</p>
         
@@ -44,7 +45,7 @@
         
     </div>
    
-    <div class="span-20 last">
+    <div class="span14 columns">
     <table>
     <tr>
       <th>When</th>
@@ -60,7 +61,7 @@
       <td><a href="{% url transfer-detail transfer.id %}">{{ transfer.description|truncatewords:20 }}</a></td>
       <td><a href="{% url account-detail transfer.source.id %}">{{ transfer.source.name }}</a></td>
       <td><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination.name }}</a></td>
-      <td>{{ transfer.amount|floatformat:2 }} &euro;</td>
+      <td>&euro; {{ transfer.amount|floatformat:2 }}</td>
     </tr>
     {% endfor %}
     {% else %}

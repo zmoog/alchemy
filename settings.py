@@ -33,6 +33,7 @@ TIME_ZONE = 'Europe/Rome'
 LANGUAGE_CODE = 'it-it'
 
 USE_L10N = True
+USE_THOUSAND_SEPARATOR = True
 
 SITE_ID = 1
 
@@ -105,6 +106,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.webdesign',
     'cash',
+    'tastypie',
 )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
