@@ -36,9 +36,9 @@ class Transfer(models.Model):
     Trasferimento di denaro da un Account ad un'altro.
     """
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
-    source = models.ForeignKey(Account, related_name = 'source', help_text="Account da cui prelevare.")
-    destination = models.ForeignKey(Account, related_name = 'destination', help_text="Account in cui depositare.")
-    description = models.TextField(help_text="Descrizione del contenuto dell'operazione di trasferimento.")
+    source = models.ForeignKey(Account, related_name = 'source', help_text="Account da cui prelevare")
+    destination = models.ForeignKey(Account, related_name = 'destination', help_text="Account in cui depositare")
+    description = models.TextField(help_text="Descrizione del contenuto dell'operazione di trasferimento")
     validity_date = models.DateField(default=datetime.date.today, help_text="Data in cui il trasferimento è diventato effettivo. Ad esempio la valuta di un bonifico, o la data in cui hai acquistato il pane")
     created_on = models.DateTimeField(auto_now_add = True)
     updated_on = models.DateTimeField(auto_now = True)
@@ -51,7 +51,7 @@ class Transfer(models.Model):
 
 
 class TransferForm(forms.ModelForm):
-    amount = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, help_text="Quantità di denaro da trasferire da un account all'altro")
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, localize=True, help_text="Quantità di denaro da trasferire")
 
     class Meta:
         model = Transfer

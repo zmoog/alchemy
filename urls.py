@@ -29,6 +29,8 @@ class TransferResource(ModelResource):
             'description': ALL,
             'amount': ALL
         }
+        ordering = ['created_on', 'validity_date']
+        authentication = ApiKeyAuthentication()
 
 
 

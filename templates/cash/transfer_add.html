@@ -7,13 +7,13 @@
 {% block head %}
 
 <script type="text/javascript">
-	$(document).ready(function() {
+	$(function() {
 		// $('#id_validity_date').datepicker($.datepicker.regional['it'], {'dateFormat': 'yy-mm-dd'});
 		$('#id_amount').focus();
-        	$('.message').animate({opacity: 1.0}, 5000).fadeOut('slow');
+    $('.message').animate({opacity: 1.0}, 5000).fadeOut('slow');
 		$('<br/>').appendTo($('label'))
 		$('fieldset input[type=text]').addClass('text');
-                $('a.close').parent().click(function(e) { $(this).fadeOut() });
+    $('a.close').parent().click(function(e) { $(this).fadeOut() });
 	});
 </script>
 
@@ -21,93 +21,74 @@
 
 {% block content %}
 
-<div class="row">
+	<section id="transfer-add-section">
 
-    <div class="page-header">
-        <h1>
-            Add new transfer
-            <small>Crea un nuovo trasferimento di denaro da un contro ad un altro.</small>
-        </h1>
-    </div>
- 
-    <div class="span10 columns">
+		<div class="page-header">
+			<h1>Add a new transfer<small>Crea un nuovo trasferimento di denaro da un contro ad un altro.</small></h1>
+		</div>
 
-            <form method="post" action="">{% csrf_token %}
-                <fieldset>
-                    {% for field in form %}
-                    <div class="clearfix {% if field.errors %}error{% endif %}">
-                        {{ field.label_tag }}
-                        <div class="input">
-                            {{ field }}
-                            {% if field.help_text %}
-                            <span class="help-block"> {{ field.help_text}}. </span>
-                            {% endif %}
-                            {% for error in field.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
+    <div class="row">
 
-                    <div class="actions">
-                        <input class="btn primary" type="submit" value="Save" />
-                        <input class="btn" type="reset" value="Reset" />
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </div>
- 
-<!--
-                    <div class="clearfix">
-                        <label for="id_username">Username</label>
-                        <div class="input">{{ form.username }}</div>
-                    </div>
-                    <div class="clearfix">
-                        <label for="id_password">Password</label>
-                        <div class="input">{{ form.password }}</div>
-                    </div>
+			<div class="span8">
 
-                    <div class="actions">
-                        <input class="btn primary" type="submit" value="login" />
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </div>
+			<form method="post" action="" class="form-horizontal">{% csrf_token %}
+        <fieldset>
+          {% for field in form %}
+          <div class="control-group {% if field.errors %}{% endif %}">
+            <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+              {{ field }}
+              {% if field.help_text %}
+              <span class="help-block"> {{ field.help_text}}. </span>
+              {% endif %}
+              {% for error in field.errors %}
+              <span class="help-inline">{{ error }}</span>
+              {% endfor %}
+            </div>
+          </div><!-- /control-group -->
+          {% endfor %}
 
+          <div class="form-actions">
+            <input class="btn btn-primary" type="submit" value="Save changes" />
+            <input class="btn" type="reset" value="Reset" />
+            <input type="hidden" name="next" value="{{ next }}" />
+          </div>
+        </fieldset>
+      </form>
 
--->
-                </fieldset>
-            </form>
+    </div><!-- /span8 -->
 
-    </div>
+    <div class="span4">
 
-	<div class="span6 columns">
+	    <h3>Latest trasfers</h3>
 
-	<h3>Latest trasfers</h3>
+	      {% if latest %}
+	      {% regroup latest by validity_date as latest_by_day %}
+	      <ul>
+	      {% for item in latest_by_day %}
 
-	{% if latest %}
+          <li class="append-bottom">
+	      		<h4 class="alt">{{ item.grouper|naturalday }}</h4>
+	      	
+	      		{% for transfer in item.list %}
+	      		<ul>
+	      			<li title="{{ transfer.description|truncatewords:10 }}"><em>{{ transfer.amount|floatformat:2 }} &euro;</em> da <em><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></em> a <em><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></em>.</li>
+	      		</ul>
+	      		{% endfor %}
+	      		
+	      	</li>
 
-	{% regroup latest by validity_date as latest_by_day %}
+         	{% endfor %}
+         	</ul>
 
-	<ul>
-	{% for item in latest_by_day %}
+	      {% else %}
+	      <p>no latest transfers</p>
+	      {% endif %}
 
-		<li class="append-bottom">
-			<h4 class="alt">{{ item.grouper|naturalday }}</h4>
-		
-			{% for transfer in item.list %}
-			<ul>
-				<li title="{{ transfer.description|truncatewords:10 }}"><em>{{ transfer.amount|floatformat:2 }} &euro;</em> da <em><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></em> a <em><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></em>.</li>
-			</ul>
-			{% endfor %}
-			
-		</li>
+      </div><!-- /span4 -->
 
-   	{% endfor %}
-   	</ul>
+    </div><!-- /row -->
 
-	{% else %}
-	<p>no latest transfers</p>
-	{% endif %}
-
-	</div>
-
-</div>
+  </section><!-- /transfer-add-section -->
 
 {% endblock %}

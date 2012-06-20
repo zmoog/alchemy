@@ -1,47 +1,54 @@
-{% extends "base.html" %}
-{% load webdesign %}
+      {% extends "base.html" %}
 
-{% block content %}
+      {% load webdesign %}
 
-<div class="container">
-    <div class="page-header">
-        <h1>Welcome</h1>
-    </div>
-    <div class="row">
+      {% block content %}
+	
+	    <section id="welcome-section">
+		
+        <div class="page-header">
+          <h1>Welcome <small>lorem ipsum</small></h1>
+        </div>
 
-    <div class="span12 columns">
-        <h3>What is Alchemy?</h3>
-        <p>Un applicazione web <em>minimalista</em> per la gestione delle spese personali e della famiglia.</p>
-    </div>
+        <div class="row">
 
+          <div class="span7">
+            <h3>What is Alchemy?</h3>
+            <p>Un applicazione web <em>minimalista</em> per la gestione delle spese personali e della famiglia.</p>
+          </div>
 
-    <div class="span4 columns">
-        <h3 class="box">0.3 (2011-09-16)</h3>
-        <ul>
-            <li>Passaggio a Bootstrap.</li>
-        </ul>
-        <h3 class="box">0.2 (2009-12-31)</h3>
-        <ul>
-            <li><em>Report</em>: aggiunta la gestione dei <span title="Movimenti da conti di tipo 'expense' ad altri">rimborsi</span>.</li>
-            <li><em>Report</em>: aggiunto il report di tipo annuale (da migliorare).</li>
-            <li><em>Archivio</em>: ora è disponibile un archivio con <strong>tutti</strong> i transfer esistenti (da migliorare).</li>
-        </ul>
-        <h3 class="box">0.1 (2009-12-03)</h3>
-        <ul>
-            <li><em>Report</em>: aggiunto un grafico nella pagina del report mensile per visualizzare i totali delle spese.</li>
-            <li><em>Transfer</em>:
-                <ul>
-                    <li>aggiunto il calendario di per la <code>validity_date</code>. Viene utilizzato il <code>DatePicker</code> della libreria jQuery.</li>
-            	    <li>Transfer add: aggiunto (finalmente!) una data di default per la <code>validity_date</code>.</li>
-            	    <li>Transfer add: ora (finalmente!) il campo <code>amount</code> ha il focus quando la pagina viene visualizzata.</li>
-                </ul>
-            </li>
-        </ul>
-    </div><!-- span7 columns -->
+          <div class="span5">
 
-    </div><!-- row -->
+            <h3 class="box">0.4 (2012-06-??)</h3>
+            <ul>
+              <li>Passaggio a Bootstrap 2.0.</li>
+            </ul>
  
-</div>
+            <h3 class="box">0.3 (2011-09-16)</h3>
+            <ul>
+              <li>Passaggio a Bootstrap.</li>
+            </ul>
+            <h3 class="box">0.2 (2009-12-31)</h3>
+            <ul>
+              <li><em>Report</em>: aggiunta la gestione dei <span title="Movimenti da conti di tipo 'expense' ad altri">rimborsi</span>.</li>
+              <li><em>Report</em>: aggiunto il report di tipo annuale (da migliorare).</li>
+              <li><em>Archivio</em>: ora è disponibile un archivio con <strong>tutti</strong> i transfer esistenti (da migliorare).</li>
+            </ul>
+            <h3 class="box">0.1 (2009-12-03)</h3>
+            <ul>
+              <li><em>Report</em>: aggiunto un grafico nella pagina del report mensile per visualizzare i totali delle spese.</li>
+              <li><em>Transfer</em>:
+              <ul>
+                <li>aggiunto il calendario di per la <code>validity_date</code>. Viene utilizzato il <code>DatePicker</code> della libreria jQuery.</li>
+            	  <li>Transfer add: aggiunto (finalmente!) una data di default per la <code>validity_date</code>.</li>
+            	  <li>Transfer add: ora (finalmente!) il campo <code>amount</code> ha il focus quando la pagina viene visualizzata.</li>
+              </ul>
+            </ul>
+          </div><!-- span5 -->
 
-{% endblock %}
+        </div><!-- row -->
+ 
+      </section>
+
+      {% endblock %}
 

@@ -39,5 +39,12 @@ class GetStringNode(template.Node):
 
        return get.urlencode()
 
+
+def page_range_filter(page_number):
+  """
+  """
+  return range(page_number - 1, page_number + 10)
+
 register.tag('get_string', do_get_string)
+register.filter('page_range', page_range_filter)
 

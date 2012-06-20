@@ -12,42 +12,51 @@
 
 {% block content %}
 
-<div class="span16 columns">
-         <div class="page-header">
-		<h1>Transfer archive</h1>
-         </div>
-</div><!-- span16 -->
+      <section id="account-list-section">
 
-<div class="span16 columns">
+        <div class="page-header">
+		      <h1>Transfer archive <small>bla bla bla</small></h1>
+        </div>
 
-    <table class="zebra-striped">
-        <tr>
-	    <th>date</th>
-	    <th>desc</th>
-	    <th>Source</th>
-	    <th>Destination</th>
-	    <th>amount</th>
-	</tr>
+        <div class="row">
 	
-	{% for object in transfers.object_list %}
-	<tr>
-		<td>{{ object.validity_date|date:"j b"}}</td>
-		<td><a href="{% url transfer-detail object.id %}">{{ object.description }}</a></td>
-		<td><a href="{% url account-detail object.source.id %}">{{ object.source }}</a></td/>
-		<td><a href="{% url account-detail object.destination.id %}">{{ object.destination }}</a></td/>
-		<td><span style="color: grey;">&euro;</span> {{ object.amount|floatformat:2 }}</td>
-	</tr>		
-	{% endfor %}
-    </table>
+          <div class="span12">
 
-    <div class="pagination">
-        <ul>
-            <li class="prev{% if not transfers.has_previous %} disabled{% endif %}"><a href="?page={{ transfers.previous_page_number }}">&larr; Previous</a></li>
-            <li class="active"><a href="#">{{ transfers.number }}</a></li>
-            <li class="next{% if not transfers.has_next %} disabled{% endif %}"><a href="?page={{ transfers.next_page_number }}">Next &rarr;</a></li>
-        </ul>
-    </div>
+            <table class="table table-striped">
+              <tr>
+	              <th>date</th>
+                <th>desc</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>amount</th>
+              </tr>	
+              {% for object in transfers.object_list %}
+              <tr>
+                <td>{{ object.validity_date|date:"j b"}}</td>
+                <td><a href="{% url transfer-detail object.id %}">{{ object.description }}</a></td>
+                <td><a href="{% url account-detail object.source.id %}">{{ object.source }}</a></td/>
+                <td><a href="{% url account-detail object.destination.id %}">{{ object.destination }}</a></td/>
+                <td><span style="color: grey;">&euro;</span> {{ object.amount|floatformat:2 }}</td>
+              </tr>		
+              {% endfor %}
+            </table>
 
-</div><!-- span16 columns -->
-    
+            <div class="pagination">
+              <ul>
+                <li class="prev{% if not transfers.has_previous %} disabled{% endif %}"><a href="?page={{ transfers.previous_page_number }}">&larr; Previous</a></li>
+
+                {% for page_number in transfers.next_page_number|page_range %}
+                <li {% if page_number == transfers.number %}class="active"{% endif %}><a href="?page={{ page_number }}">{{ page_number }}</a></li>
+                {% endfor %}
+
+                <li class="next{% if not transfers.has_next %} disabled{% endif %}"><a href="?page={{ transfers.next_page_number }}">Next &rarr;</a></li>
+              </ul>
+            </div><!-- /pagination -->
+
+          </div><!-- /span12 -->
+
+        </div><!-- /row -->    
+
+      </section> <!-- /account-list-section -->
+
 {% endblock %}

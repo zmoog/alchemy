@@ -1,54 +1,58 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
-    {% block title %}Login{% endblock %}
+{% block title %}Login{% endblock %}
 
-    {% block head %}
-        <script type="text/javascript">
-		$(document).ready(function() {
-			$('#id_username').focus();
+  {% block head %}
+  <script type="text/javascript">
+  $(function() {
+    $('#id_username').focus();
 	});
-	</script>
-    {% endblock %}
+  </script>
+  {% endblock %}
 
-    {% block content %} 
-  
-         <div class="page-header">
-           <h1>Login</h1>
-         </div>
+      {% block content %} 
 
-	<div class="row">
-	    {% if form.errors %}
-            <div class="alert-message error">
-                <a class="close" href="#">&times;</a>
-    	        <p><strong>Doh!</strong> Your username and password didn't match. Please try again.</p>
+      <section id="login-section">
+
+        <div class="page-header">
+          <h1>Login <small>Login</small></h1>
+        </div>
+
+	      <div class="row">
+          <div class="span12">
+	          {% if form.errors %}
+            <div class="alert">
+              <a class="close" href="#">x</a>
+    	        <strong>Doh!</strong> Your username and password didn't match. Please try again.
             </div>
-	    {% endif %}
+            {% endif %}
+          </div>
         </div>
 
         <div class="row">
-
+          <div class="span12">
             <form method="post" action="{% url login %}">{% csrf_token %}
-                <fieldset>
-                    <div class="clearfix">
-                        <label for="id_username">Username</label>
-                        <div class="input">{{ form.username }}</div>
-                    </div>
-                    <div class="clearfix">
-                        <label for="id_password">Password</label>
-                        <div class="input">{{ form.password }}</div>
-                    </div>
+              <fieldset>
+                <div class="clearfix">
+                  <label for="id_username">Username</label>
+                  <div class="input">{{ form.username }}</div>
+                </div>
+                <div class="clearfix">
+                  <label for="id_password">Password</label>
+                  <div class="input">{{ form.password }}</div>
+                </div>
 
-                    <div class="actions">
-                        <input class="btn primary" type="submit" value="login" />
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </div>
-                </fieldset>
+                <div class="actions">
+                  <input class="btn primary" type="submit" value="login" />
+                  <input type="hidden" name="next" value="{{ next }}" />
+                </div>
+              </fieldset>
             </form>
 
-        </div>
+          </div><!-- /span12 -->
+        </div><!-- /row -->
 
-    </div>
+      </section>
 
     {% endblock %}
-
 

@@ -4,30 +4,78 @@
 
 {% block content %}
 
-	<div class="container">	
+    <section>
 
-		<hr />
-		
-    {% if object_list %}
+      {% if object_list %}
+        
+		    {% regroup object_list by get_type_display as x  %}
 
-		{% regroup object_list by type as x  %}
+        <div class="tabbable">
 
-		{% for y in x %}
-		<div class="{% if forloop.first %}prepend-2{% endif %} span-3 {% if forloop.last %}append-1 {% endif %}">
-			<h3>{{ y.grouper }}</h3>
-		
-			{% for account in y.list %}
-			<li><a title="balance {{ account.balance|floatformat:2}}" href="{{ account.id }}/">{{ account }}</a></li>
-			{% endfor %}
-		
-		</div>
-		{% endfor %}
+          <ul class="nav nav-tabs">
+		      {% for y in x %}
 
-	{% else %}
+            <li class="{% if y.grouper = 'Expenses'  %}active{% endif %}">
+            <a href="#tab-pane-{{ forloop.counter }}" data-toggle="tab">{{ y.grouper }}</a>
+            </li>
 
-    <p>Sorry dude, no stuff here.. if yor're bored take a look ad <a href="http://stacktrace.it/">stacktrace</a></p>
+		      {% endfor %}
+          </ul>
+         
+          <div class="tab-content">
 
-	{% endif %}
-	</div>
+            {% for y in x %}
+
+            <div class="tab-pane {% if y.grouper = 'Expenses' %}active{% endif %}" id="tab-pane-{{ forloop.counter }}">
+
+              <div class="row">
+                
+                <div class="span4">
+                  <ul>
+    	  		        {% for account in y.list %}
+                    {% if forloop.counter <= 20 %}
+                    <li><a title="balance {{ account.balance|floatformat:2}}" href="{{ account.id }}/">{{ account }}</a></li>
+                    {% endif %}
+    			          {% endfor %}
+    	            </ul>
+                </div>
+
+                <div class="span4">
+                  <ul>
+    	  		        {% for account in y.list %}
+                    {% if forloop.counter > 20 and forloop.counter <= 40 %}
+                    <li><a title="balance {{ account.balance|floatformat:2}}" href="{{ account.id }}/">{{ account }}</a></li>
+                    {% endif %}
+    			          {% endfor %}
+    	            </ul>
+                </div>
+
+                <div class="span4">
+                  <ul>
+    	  		        {% for account in y.list %}
+                    {% if forloop.counter > 40 %}
+                    <li><a title="balance {{ account.balance|floatformat:2}}" href="{{ account.id }}/">{{ account }}</a></li>
+                    {% endif %}
+    			          {% endfor %}
+    	            </ul>
+                </div>
+
+              </div><!-- /row -->
+                
+            </div><!-- /tab-pane -->
+
+            {% endfor %}
+
+          </div><!-- /tab-content -->
+         
+      </div> <!-- /tabbable -->
+
+	    {% else %}
+
+        <p>Sorry dude, no stuff here.. if yor're bored take a look ad <a href="http://stacktrace.it/">stacktrace</a></p>
+
+	    {% endif %}
+    </section>
+
 
 {% endblock %}
