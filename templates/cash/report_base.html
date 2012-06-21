@@ -27,7 +27,7 @@
       },
       tooltip: {
          formatter: function() {
-            return '<b>'+ this.point.name +'</b>: € '+ this.point.y +' %';
+            return '<b>'+ this.point.name +'</b>: ' + Math.round(this.percentage*100)/100 + ' %';
          }
       },
       plotOptions: {
@@ -39,7 +39,7 @@
                color: Highcharts.theme.textColor || '#000000',
                connectorColor: Highcharts.theme.textColor || '#000000',
                formatter: function() {
-                  return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage*100)/100+' %';
+                  return '<b>'+ this.point.name + '</b>: € ' + this.point.y;
                }
             }
          }
