@@ -14,39 +14,43 @@
 
       <section id="login-section">
 
-        <div class="page-header">
-          <h1>Login <small>Login</small></h1>
-        </div>
-
 	      <div class="row">
           <div class="span12">
 	          {% if form.errors %}
             <div class="alert">
-              <a class="close" href="#">x</a>
-    	        <strong>Doh!</strong> Your username and password didn't match. Please try again.
+              <button type="button" class="close" data-dismiss="alert">×</button>
+    	        <h4>Doh!</h4> 
+              <p>Your username and password didn't match. Please try again.</p>
             </div>
             {% endif %}
           </div>
         </div>
 
+        <div class="page-header">
+          <h1>Login <small>log into your personal acccount</small></h1>
+        </div>
+
         <div class="row">
           <div class="span12">
-            <form method="post" action="{% url login %}">{% csrf_token %}
-              <fieldset>
-                <div class="clearfix">
-                  <label for="id_username">Username</label>
-                  <div class="input">{{ form.username }}</div>
-                </div>
-                <div class="clearfix">
-                  <label for="id_password">Password</label>
-                  <div class="input">{{ form.password }}</div>
-                </div>
 
-                <div class="actions">
-                  <input class="btn primary" type="submit" value="login" />
+            <form method="post" action="{% url login %}">{% csrf_token %}
+             
+              <fieldset>
+                
+                <label for="id_username">Username</label>
+                <div class="input">{{ form.username }}</div>
+              
+                <label for="id_password">Password</label>
+                <div class="input">{{ form.password }}</div>
+                
+
+                <div class="form-actions">
+                  <input class="btn btn-primary" type="submit" value="Login" />
                   <input type="hidden" name="next" value="{{ next }}" />
                 </div>
+                
               </fieldset>
+
             </form>
 
           </div><!-- /span12 -->
