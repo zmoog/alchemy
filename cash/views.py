@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect
 from django import forms 
 from django.db import transaction
 from django.db.models import Q, Sum
@@ -8,9 +8,11 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.views.generic import list_detail
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 import decimal
 import datetime
+import unicodecsv as csv
 
 from cash.models import Account, Transfer, TransferForm
 
@@ -299,18 +301,38 @@ def account_detail_monthly(request, object_id, year, month):
     """
     return account_detail(request, object_id, year, month)
     
+#@login_required
+def account_detail_csv(request, object_id, year=None, month=None):
+    """
+    Accounts transfers as CSV file.
+    """
+
+    response = HttpResponse(mimetype='text/csv; charset=utf-8')
+    response['Content-Disposition'] = 'attachment; filename=somefilename.csv'
+
+    writer = csv.writer(response)
+
+    #writer.writerow(['First row', 'Foo', 'Bar', 'Baz'])
+    #writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
+
+    transfer_list, month_list = _account_detail(object_id, year, month)
+
+    for transfer in transfer_list:
+        writer.writerow([transfer.validity_date, transfer.source, transfer.destination, transfer.amount, transfer.description])
+
+    return response
+
+
+
+def _account_detail(object_id, year=None, month=None):
+    """
+    """
     
-
-def account_detail(request, object_id, year=None, month=None):
-    """
-    """
-
-    account = get_object_or_404(Account, pk=object_id)
     transfer_list = Transfer.objects.filter(
             Q(source__id = object_id) | Q(destination__id = object_id)
         ).order_by('-validity_date')
 
-    months = transfer_list.dates('validity_date', 'month', order="DESC")
+    month_list = transfer_list.dates('validity_date', 'month', order="DESC")
 
     if year:
         transfer_list = transfer_list.filter(validity_date__year=int(year))
@@ -318,12 +340,37 @@ def account_detail(request, object_id, year=None, month=None):
     if month:
         transfer_list = transfer_list.filter(validity_date__month=int(month))
 
+    return transfer_list, month_list
+
+
+def account_detail(request, object_id, year=None, month=None):
+    """
+    All transfers of the given account.
+    """
+
+    account = get_object_or_404(Account, pk=object_id)
+
+    #account = get_object_or_404(Account, pk=object_id)
+    #transfer_list = Transfer.objects.filter(
+    #        Q(source__id = object_id) | Q(destination__id = object_id)
+    #    ).order_by('-validity_date')
+    #
+    #months = transfer_list.dates('validity_date', 'month', order="DESC")
+    #
+    #if year:
+    #    transfer_list = transfer_list.filter(validity_date__year=int(year))
+    #
+    #if month:
+    #    transfer_list = transfer_list.filter(validity_date__month=int(month))
+
+    transfer_list, month_list = _account_detail(object_id, year, month)
+
     context = {
         'now': datetime.datetime.now(),
         'object': account,
         'transfer_list': transfer_list[:10],
         'count': transfer_list.count(),
-        'months': months
+        'months': month_list
     }
     
     return render_to_response(
