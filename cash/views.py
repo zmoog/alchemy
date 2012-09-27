@@ -301,7 +301,7 @@ def account_detail_monthly(request, object_id, year, month):
     """
     return account_detail(request, object_id, year, month)
     
-#@login_required
+@login_required
 def account_detail_csv(request, object_id, year=None, month=None):
     """
     Accounts transfers as CSV file.
