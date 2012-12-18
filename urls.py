@@ -18,7 +18,7 @@ class AccountResource(ModelResource):
             'name': ALL
         }
         excludes = ['balance']
-        #authentication = ApiKeyAuthentication()
+        authentication = ApiKeyAuthentication()
 
 class TransferResource(ModelResource):
     source = fields.ForeignKey(AccountResource, 'source', full=True)
