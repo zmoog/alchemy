@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %}Delete a transfer from the database{% endblock %}
+
+{% block page-header-title %}Sei sicuro?{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+			<div class="span8">
+
+			  <form class="form-horizontal" method="post">
+
+			  	{% csrf_token %}
+			 	
+			 	<fieldset>
+
+			 		<p>Sei sicuro di voler cancellare un trasferimento di &euro; <strong>{{ object.amount }}</strong> da <a href="{% url account-detail object.source.id %}">{{ object.source }}</a> a <a href="{% url account-detail object.destination.id %}">{{ object.destination }}</a> del {{ object.validity_date }}?</p>
+
+			 		<div class="form-actions">
+
+						<div class="btn-group">
+						  <a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
+						    Sì, sono sicuro
+						    <span class="caret"></span>
+						  </a>
+						  <ul class="dropdown-menu">
+						    <!-- dropdown menu links -->
+						    <li><a href="">Duplicato</a></li>
+						    <li><a href="">Inserito per errore</a></li>
+						  </ul>
+						</div>
+
+						<a href="{% url transfer-detail object.id %}" class="btn">No, lascia perdere</a>
+					</div>
+
+          		</fieldset>		
+        </form>
+
+      </div><!-- /span8 -->
+
+{% endblock %}

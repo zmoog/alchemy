@@ -19,14 +19,11 @@
 
 {% endblock %}
 
+{% block page-header-title %}Add a new transfer{% endblock %}
+
+{% block page-header-small %}Crea un nuovo trasferimento di denaro da un contro ad un altro{% endblock %}
+
 {% block content %}
-
-  <section>
-
-		<div class="page-header">
-			<h2>Add a new transfer
-      <small>Crea un nuovo trasferimento di denaro da un contro ad un altro.</small></h2>
-		</div>
 
     <div class="row">
 
@@ -50,7 +47,14 @@
             {% endfor %}
 
             <div class="form-actions">
-              <input class="btn btn-primary" type="submit" value="Save changes" />
+
+              {% if form.instance.id %}
+              <input class="btn btn-primary" type="submit" value="Update" />
+              <a href="{% url transfer-delete form.instance.id %}" class="btn btn-danger">Delete</a>
+              {% else %}
+              <input class="btn btn-primary" type="submit" value="Save" />
+              {% endif %}
+
               <input class="btn" type="reset" value="Reset" />
               <input type="hidden" name="next" value="{{ next }}" />
             </div>
@@ -90,6 +94,6 @@
 
     </div><!-- /row -->
 
-  </section>
+  
 
 {% endblock %}

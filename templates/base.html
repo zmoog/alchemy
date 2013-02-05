@@ -9,11 +9,12 @@
     <meta name="author" content="">
 
     <link href="/media/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>		
-    <link href="/media/bootstrap/css/docs.css" rel="stylesheet"></link>    
+    <!-- <link href="/media/bootstrap/css/docs.css" rel="stylesheet"></link>    -->
     <link href="/media/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"></link>
+    <link href="/media/css/app.css" rel="stylesheet"></link>
   
     <script type="text/javascript" src="/media/js/jquery/min.js"></script>
-    <script type="text/javascript" src="/media/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/media/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/media/js/highcharts.js"></script>
     <script type="text/javascript" src="/media/js/app.js"></script>
   
@@ -87,30 +88,30 @@
 
     <div class="container">
         
-      {% if messages %}
-      {% for message in messages %}
-      <div class="alert">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <h4>Well done!</h4>
-        <p>{{ message }}</p>
-      </div>
-      {% endfor %}
-      {% endif %}
+      <section>
 
-      {% block content %}{% endblock %}
-       
-      {% comment %}
-               <script type="text/javascript">
-               	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-                   	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-                </script>
-                <script type="text/javascript">
-                	var pageTracker = _gat._getTracker("UA-4334580-1");
-                   	pageTracker._initData();
-                   	pageTracker._trackPageview();
-                </script>
-     	{% endcomment %}
-        	
+        {% if messages %}
+        <div class="row">
+          <div class="span12">
+            {% for message in messages %}
+            <div class="alert alert-block {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              {% comment %}<h4>Well done!</h4>{% endcomment %}
+              <p>{{ message }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="page-header">
+          <h2>{% block page-header-title %}Page header{% endblock %}
+          <small>{% block page-header-small %}{% endblock %}</small></h2>
+        </div>
+
+        {% block content %}{% endblock %}
+    
+      </section>  	
 
     </div><!-- /container -->
 

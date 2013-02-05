@@ -10,53 +10,48 @@
   </script>
   {% endblock %}
 
-      {% block content %} 
+  {% block page-header-title %}Login{% endblock %}
 
-      <section id="login-section">
+  {% block page-header-small %}log into your personal acccount{% endblock %}
 
-	      <div class="row">
-          <div class="span12">
-	          {% if form.errors %}
-            <div class="alert">
-              <button type="button" class="close" data-dismiss="alert">×</button>
-    	        <h4>Doh!</h4> 
-              <p>Your username and password didn't match. Please try again.</p>
+  {% block content %} 
+
+    <div class="row">
+      <div class="span12">
+        {% if form.errors %}
+        <div class="alert alert-block alert-error">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+	        <h4>Doh!</h4> 
+          <p>Your username and password didn't match. Please try again.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span12">
+
+        <form method="post" action="{% url login %}">{% csrf_token %}
+         
+          <fieldset>
+            
+            <label for="id_username">Username</label>
+            <div class="input">{{ form.username }}</div>
+          
+            <label for="id_password">Password</label>
+            <div class="input">{{ form.password }}</div>
+
+            <div class="form-actions">
+              <input class="btn btn-primary" type="submit" value="Login" />
+              <input type="hidden" name="next" value="{{ next }}" />
             </div>
-            {% endif %}
-          </div>
-        </div>
+            
+          </fieldset>
 
-        <div class="page-header">
-          <h1>Login <small>log into your personal acccount</small></h1>
-        </div>
+        </form>
 
-        <div class="row">
-          <div class="span12">
+      </div><!-- /span12 -->
+    </div><!-- /row -->
 
-            <form method="post" action="{% url login %}">{% csrf_token %}
-             
-              <fieldset>
-                
-                <label for="id_username">Username</label>
-                <div class="input">{{ form.username }}</div>
-              
-                <label for="id_password">Password</label>
-                <div class="input">{{ form.password }}</div>
-                
-
-                <div class="form-actions">
-                  <input class="btn btn-primary" type="submit" value="Login" />
-                  <input type="hidden" name="next" value="{{ next }}" />
-                </div>
-                
-              </fieldset>
-
-            </form>
-
-          </div><!-- /span12 -->
-        </div><!-- /row -->
-
-      </section>
-
-    {% endblock %}
+{% endblock %}
 

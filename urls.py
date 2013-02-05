@@ -53,6 +53,9 @@ urlpatterns = patterns('',
 
     url(r'^api/', include(v1_api.urls)),
 
+    url(r'^report/', include('report.urls')),
+    url(r'^analysis/', include('analysis.urls')),
+
     url(r'^', include('cash.urls')),
 )
 

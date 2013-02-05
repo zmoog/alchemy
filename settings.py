@@ -105,7 +105,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.humanize',
     'django.contrib.webdesign',
+    'analysis',
     'cash',
+    'report',
     'tastypie',
 )
 
