@@ -1,0 +1,23 @@
+/* Add additional stylesheets below
+-------------------------------------------------- */
+
+/* Body and structure
+-------------------------------------------------- */
+
+
+#page-container {
+  /* position: relative; 
+  padding-top: 50px; */
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 767px) {
+	#page-container {
+	  /* position: relative; 
+	  padding-top: 50px; */
+	  padding-top: 10px;
+	  /* padding-bottom: 40px; */
+	}
+
+}

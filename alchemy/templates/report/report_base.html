@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load l10n %}
+
+{% block title %}Report{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/report/report.js">
+
+    <script type="text/javascript">
+      var theme = 'default';
+      var chart;
+      $(function()
+      {
+        Highcharts.theme = { colors: ['#4572A7'] };// prevent errors in default theme
+        var highchartsOptions = Highcharts.getOptions(); 
+        // add your js code here.
+        chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'chart',
+         plotBackgroundColor: null,
+         plotBorderWidth: null,
+         plotShadow: false
+      },
+      title: {
+         text: 'First six expenses'
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.point.name +'</b>: ' + Math.round(this.percentage*100)/100 + ' %';
+         }
+      },
+      plotOptions: {
+         pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+               enabled: true,
+               color: Highcharts.theme.textColor || '#000000',
+               connectorColor: Highcharts.theme.textColor || '#000000',
+               formatter: function() {
+                  return '<b>'+ this.point.name + '</b>: € ' + this.point.y;
+               }
+            }
+         }
+      },
+       series: [{
+         type: 'pie',
+         name: 'Browser share',
+         data: [
+            {% localize off %}
+            {% for e in expense_list.y|dictsortreversed:"tot"|slice:":6" %}
+            {name: '{{ e.name|truncatewords:2 }}', y: {{ e.tot }} {% if forloop.first %}, sliced: true, selected: true {% endif %} } {% if not forloop.last %},{% endif %}
+            {% endfor %}
+            {% endlocalize %}
+{% comment %}
+            {
+               name: 'Chrome',    
+               y: 12.8,
+               sliced: true,
+               selected: true
+            }
+{% endcomment %}
+         ]
+      }]
+   });
+      });
+    </script>
+ 
+{% endblock %}
+
+{% block content %}
+
+  <div id="report-month">
+
+    <div class="row">
+      <div class="span12">
+
+        <div class="tabbable">
+
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#summary" data-toggle="tab">Summary</a></li>
+            {% if expense_list.tot %}<li><a href="#expense" data-toggle="tab">Expense ({{ expense_list.transfers|length }})</a></li>{% endif %}
+            {% if income_list.tot %}<li><a href="#income" data-toggle="tab">Income ({{ income_list.transfers|length }})</a></li>{% endif %}
+            {% if rebate_list.tot %}<li><a href="#refund" data-toggle="tab">Refund ({{ rebate_list.transfers|length }})</a></li>{% endif %}
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="summary">
+
+		          <div class="row">
+		            <div class="span8">
+                  <div id="chart"></div>
+                </div>
+
+                <div class="span4">
+
+                  <table class="table table-striped">
+                    <tr>
+                      <th>Account</th>
+                      <th>Total</th>
+                    </tr>
+                    {% for e in expense_list.y|dictsortreversed:"tot" %}
+                    <tr>
+                      <td><a href="{% url account-detail e.id %}">{{ e.name }}</a></td>
+                      <td>&euro; {{ e.tot }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+    
+		            </div><!-- /span4 -->
+		          </div><!-- /row -->
+
+              <div class="row">
+                <div class="span12">
+                  <button class="btn btn-danger" data-keyboard="true" data-backdrop="true" data-controls-modal="modal-totali">Launch Modal</button>
+                </div>
+              </div>
+
+            </div> <!-- #summary -->
+            
+            <div class="tab-pane" id="expense">
+
+                <h3>{{ expense_list.tot }}</h3>
+
+                <div class="tabbale">
+
+                  <ul class="nav nav-pills">
+                      {% for week in weeks %}
+                      <li {% if forloop.first %}class="active"{% endif %}><a href="#week{{ week.grouper }}" data-toggle="pills">{{ week.grouper }}</a></li>
+                      {% endfor %}
+                  <ul>
+      
+                  <div class="tab-content">
+
+            {% regroup expense_list.transfers by validity_date|date:"W" as weeks %}
+  
+            {% for week in weeks %}
+
+            <div class="tab-pane {% if forloop.first %}active{% endif %}" id="week{{ week.grouper }}">
+
+              <table class="table table-striped"><!-- week {{ week.grouper }} -->
+
+                {% for transfer in week.list %}
+                        <tr>
+                
+                	{% ifchanged transfer.validity_date.day %}
+	                <td><a href="{% url report-day transfer.validity_date.year transfer.validity_date.month transfer.validity_date.day %}">{{ transfer.validity_date|naturalday:"l j" }}</a></td>
+    	                {% else %}
+            	        <td>
+                        </td>
+                	{% endifchanged %}
+
+	                <td>{{ transfer.amount|floatformat:2 }}</td>
+    	                <td><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></td>
+            	        <td><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></td>
+                	<td><a href="{% url transfer-detail transfer.id %}">{{ transfer.description }}</a></td>
+                	
+                        </tr>
+         
+                {% endfor %}
+
+              </table><!-- week {{ week.grouper }} -->
+              
+            </div><!-- week{{ week.grouper }}-->
+  
+          {% endfor %}
+
+          </div><!-- pills-content -->
+
+        </div><!-- #expense -->
+
+        <div class="tab-pane" id="refund">
+          <h3>{{ rebate_list.tot }}</h3>
+ 
+            <table>
+            
+                {% for transfer in rebate_list.transfers %}
+
+	    		{% ifchanged %}
+	    		<tr>
+	    			<td colspan="5">
+	    				Settimana {{ transfer.validity_date|date:"W" }}
+	    			</td>
+	    		</tr>
+	    		{% endifchanged %}
+
+                <tr>
+	                <td><a href="{% url report-day transfer.validity_date.year transfer.validity_date.month transfer.validity_date.day %}">{{ transfer.validity_date|naturalday:"l j" }}</a></td>
+                    <td>{{ transfer.amount|floatformat:2 }};</td>
+                    <td><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></td>
+                    <td><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></td>
+                    <td>{{ transfer.description }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div><!-- #refund -->
+
+            <div class="tab-pane" id="income">
+                <h3>{{ income_list.tot }}</h3>
+                <table>
+                    {% for transfer in income_list.transfers %}
+
+	        		{% ifchanged %}
+	        		<tr>
+	        			<td colspan="5">
+	        				Settimana {{ transfer.validity_date|date:"W" }}
+	        			</td>
+	        		</tr>
+	        		{% endifchanged %}
+
+                    <tr>
+	                    <td><a href="{% url report-day transfer.validity_date.year transfer.validity_date.month transfer.validity_date.day %}">{{ transfer.validity_date|naturalday:"l j" }}</a></td>
+                        <td>{{ transfer.amount|floatformat:2 }};</td>
+                        <td><a href="{% url account-detail transfer.source.id %}">{{ transfer.source }}</a></td>
+                        <td><a href="{% url account-detail transfer.destination.id %}">{{ transfer.destination }}</a></td>
+                        <td>{{ transfer.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div><!-- #income -->
+
+        </div><!-- #tabs-content -->
+        
+
+    </div><!-- .span16 colmnss -->
+
+{% comment %}
+    <div class="span3 columns">
+
+        <h3>{{ balance }}</h3>
+        {% regroup months by year as dates %}
+        <ul>
+            {% for date in dates %}
+            <li><a href="{% url report-year date.grouper %}">{{ date.grouper }}</a>
+            
+            	<ul>
+            	{% for day in date.list %}
+            
+            	<li>
+	            	{% ifequal day.year year %}{% ifequal day.month month %}<strong>{% endifequal %}{% endifequal %}
+    	        	<a href="{% url report-month day.year, day|date:"m" %}">{{ day|date:"F" }}</a>
+	            	{% ifequal day.year year %}{% ifequal day.month month %}</strong>{% endifequal %}{% endifequal %}
+            	</li>
+            	
+            	{% endfor %}
+            	</ul>
+            	
+            </li>
+            {% endfor %}
+        </ul>
+
+    </div><!-- .span3 columns-->
+{% endcomment %}
+
+
+
+	  <!-- sample modal content -->
+          <div id="modal-totali" class="modal hide fade">
+            <div class="modal-header">
+              <a href="#" class="close">&times;</a>
+              <h3>Modal Heading</h3>
+            </div>
+            <div class="modal-body">
+                <p>Cucu!</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn primary">Primary</a>
+              <a href="#" class="btn secondary">Secondary</a>
+            </div>
+          </div>
+
+  </div><!-- report-month -->      
+  
+{% endblock %}
