@@ -6,6 +6,8 @@
 
 {% block page-header-title %}Sei sicuro?{% endblock %}
 
+{% block transferpage %}active{% endblock %}
+
 {% block content %}
 
     <div class="row">
@@ -18,7 +20,7 @@
 			 	
 			 	<fieldset>
 
-			 		<p>Sei sicuro di voler cancellare un trasferimento di &euro; <strong>{{ object.amount }}</strong> da <a href="{% url account-detail object.source.id %}">{{ object.source }}</a> a <a href="{% url account-detail object.destination.id %}">{{ object.destination }}</a> del {{ object.validity_date }}?</p>
+			 		<p>Sei sicuro di voler cancellare il trasferimento di <span class="label label-info"> &euro; {{ object.amount }}</span> da <a href="{% url account-detail object.source.id %}">{{ object.source }}</a> a <a href="{% url account-detail object.destination.id %}">{{ object.destination }}</a> del giorno <span class="label"> {{ object.validity_date }}?</span></p>
 
 			 		<div class="form-actions">
 
@@ -29,8 +31,8 @@
 						  </a>
 						  <ul class="dropdown-menu">
 						    <!-- dropdown menu links -->
-						    <li><a href="">Duplicato</a></li>
-						    <li><a href="">Inserito per errore</a></li>
+						    <li><a href="">E' un trasferimento duplicato</a></li>
+						    <li><a href="">E' stato inserito per errore</a></li>
 						  </ul>
 						</div>
 

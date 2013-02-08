@@ -1,5 +1,0 @@
-DEBUG=True
-
-INSTALLED_APPS += (
-    'toolbar',
-)

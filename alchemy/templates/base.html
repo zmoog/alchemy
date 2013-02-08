@@ -43,16 +43,16 @@
 
               <ul class="nav">
                 {% if user.is_authenticated %}
-                <li><a href="{% url account %}">Accounts</a></li>
+                <li class="{% block accountpage %}{% endblock %}"><a href="{% url account %}">Accounts</a></li>
 
-                <li class="dropdown">
+                <li class="dropdown {% block transferpage %}{% endblock %}">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transfers<b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li><a href="{% url transfer-archive %}">Archive</a></li>
                     <li><a href="{% url transfer-add %}">Add</a></li>
                   </ul>
                 </li>
-                <li><a href="{% url report %}">Report</a></li>
+                <li class="{% block reportpage %}{% endblock %}"><a href="{% url report %}">Report</a></li>
                 {% endif %}
               </ul>
 
@@ -66,7 +66,7 @@
 
                 {% if user.is_authenticated %}
 
-                <li class="dropdown active">
+                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user }}<b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li><a href="/admin/">Admin</a></li>

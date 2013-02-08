@@ -24,6 +24,8 @@ def transfer_archive(request, queryset, paginate_by):
     if request.GET.has_key('description'):
         queryset = queryset.filter(description__icontains=request.GET['description'])
 
+    queryset = queryset.select_related()
+
     paginator = Paginator(queryset, paginate_by) # Show 'paginate_by' transfers per page
     
     try:
@@ -36,6 +38,7 @@ def transfer_archive(request, queryset, paginate_by):
        transfers = paginator.page(page)
     except (EmptyPage, InvalidPage):
        transfers = paginator.page(paginator.num_pages)
+
 
     return render_to_response('cash/transfer_list.html', {'transfers': transfers}, context_instance=RequestContext(request)) 
 
@@ -60,7 +63,9 @@ def transfer_archive_day(request, year, month, day, queryset, paginate_by):
 
 @transaction.commit_on_success()
 def transfer(request, object_id):
-    latest = Transfer.objects.order_by('-created_on')[:10] 
+
+    latest = Transfer.objects.select_related().order_by('-created_on')[:10] 
+
     transfer = get_object_or_404(Transfer, pk=object_id)
 
     if request.method == 'POST':
@@ -83,7 +88,7 @@ def transfer_add(request):
     """
     View for handling the creation/modify of the Transfer objects.
     """
-    latest = Transfer.objects.order_by('-created_on')[:10] 
+    latest = Transfer.objects.select_related().order_by('-created_on')[:10] 
 
     if request.method == 'POST':
         form = TransferForm(request.POST)
@@ -134,7 +139,7 @@ def _account_detail(object_id, year=None, month=None):
     """
     """
     
-    transfer_list = Transfer.objects.filter(
+    transfer_list = Transfer.objects.select_related().filter(
             Q(source__id = object_id) | Q(destination__id = object_id)
         ).order_by('-validity_date')
 

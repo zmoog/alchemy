@@ -116,7 +116,7 @@ def _do_balance(queryset):
     expense = { 'tot': 0, 'transfers': [], 'x': {} }
     rebate = { 'tot': 0, 'transfers': []}
 
-    final_queryset = queryset.filter(
+    final_queryset = queryset.select_related().filter(
         Q(destination__type='ex') | 
         Q(source__type='in') | 
         Q(source__type='ex'))
