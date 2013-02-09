@@ -106,7 +106,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = normpath(join(SITE_ROOT, 'static'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static/'
+STATIC_URL = '/static'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
@@ -123,7 +123,7 @@ STATICFILES_FINDERS = (
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+#ADMIN_MEDIA_PREFIX = '/static/media/admin/'
 
 # Make this unique, and don't share it with anybody.
 #SECRET_KEY = 'd()n*zeja_hhr@na6zi(_4db+25ib1v(u8$c7hmsd9n9#=sw0o'
