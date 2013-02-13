@@ -6,8 +6,12 @@ from django.views.generic.simple import direct_to_template
 
 from django.views.generic import DetailView
 
-from cash.models import Account, Transfer
-from cash.views import *
+from .models import Account, Transfer
+#from cash.views import *
+from .views import AccountDetailView
+from .views import transfer_add, transfer, account_detail, account_detail_monthly, transfer_archive, transfer_archive_year, transfer_archive_month, transfer_archive_day, account_detail_csv
+
+
 
 account_info = {
     'queryset': Account.objects.all().order_by('type', 'name')
@@ -42,7 +46,11 @@ urlpatterns = patterns('',
     
     url(r'^account/$', login_required(object_list), account_info, name='account'),
     
-    url(r'^account/(?P<object_id>\d+)/$', login_required(account_detail), name="account-detail"),
+    #url(r'^account/(?P<object_id>\d+)/$', login_required(account_detail), name="account-detail"),
+    url(r'^account/(?P<pk>\d+)/$', AccountDetailView.as_view(), name="account-detail"),
+
+
+
     url(r'^account/(?P<object_id>\d+)/csv/$', account_detail_csv, name="account-detail-csv"),
     url(r'^account/(?P<object_id>\d+)/(?P<year>\d+)/$', login_required(account_detail), name="account-detail-annual"),
     url(r'^account/(?P<object_id>\d+)/(?P<year>\d+)/(?P<month>\d+)/$', login_required(account_detail_monthly), name="account-detail-monthly"),

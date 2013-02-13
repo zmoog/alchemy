@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.views.generic import list_detail
+from django.views.generic import DetailView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -152,6 +153,39 @@ def _account_detail(object_id, year=None, month=None):
         transfer_list = transfer_list.filter(validity_date__month=int(month))
 
     return transfer_list, month_list
+
+
+
+
+class BaseAccountDetailView(DetailView):
+
+    model = Account
+
+    def get_context_data(self, **kwargs):
+
+        context = super(BaseAccountDetailView, self).get_context_data(**kwargs)
+
+        object_id = self.object.id
+
+        #transfer_list, month_list = _account_detail(self.object.id)
+        transfer_list = Transfer.objects.select_related().filter(
+            Q(source__id = object_id) | Q(destination__id = object_id)
+        ).order_by('-validity_date')
+
+        # add extra context data
+        context['now'] = datetime.datetime.now()
+        context['transfer_list'] = transfer_list
+        context['count'] = transfer_list.count()
+
+        return context
+
+
+class AccountDetailView(BaseAccountDetailView):
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountDetailView, self).get_context_data(**kwargs)
+        context['transfer_list'] = context['transfer_list'][:10]
+        return context
 
 
 def account_detail(request, object_id, year=None, month=None):

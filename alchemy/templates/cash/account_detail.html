@@ -5,6 +5,7 @@
 {% block title %}Details of {{ object.name }}{% endblock %}
 
 {% block page-header-title %}{{ object.name}}{% endblock %}
+{% block page-header-small %} balance of <strong>&euro; {{ object.balance }}</strong> in <strong>{{ count }}</strong> transfers.{% endblock %}
 
 {% block accountpage %}active{% endblock %}
 
@@ -12,7 +13,7 @@
 
     <div class="row">
   
-      <div class="span9">
+      <div class="span12">
         <table class="table table-striped">
           <tr>
             <th>When</th>
@@ -39,11 +40,14 @@
         </table>
       </div>
 
+{% comment %}
       <div class="span3">
-        <h3>Bilancio: {{ object.balance }}</h3>
+        <h3 class="badge">{{ object.balance }}</h3>
         <h4>({{ count }})</h4>
         
+        
         <p><a href="{% url sandbox object.id now|date:"Y" %}">Analysis</a></p>
+        
         
       	{% regroup months by year as dates %}
 
@@ -63,13 +67,18 @@
           </li>
           {% endfor %}
         </ul>
+
       </div>
+
+{% endcomment %}
  
     </div><!-- /row -->
 
+    {% comment %}
     <div class="row">
 
       <div class="span9">Export all transfers as a <a href="{% url account-detail-csv object.id %}"><span class="icon-download"></span> <abbr title="Comma Separated Value(s) (database export/import format and file extension)  ">CSV</abbr></a> file.</div>
     </div>
+    {% endcomment %}
 
 {% endblock %}
