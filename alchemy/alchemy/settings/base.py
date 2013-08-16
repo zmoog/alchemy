@@ -94,19 +94,19 @@ USE_I18N = True
 
 ########## MEDIA CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = normpath(join(SITE_ROOT, 'media'))
+MEDIA_ROOT = '' #normpath(join(SITE_ROOT, 'media'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = '/media/'
+MEDIA_URL = ''
 ########## END MEDIA CONFIGURATION
 
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = normpath(join(SITE_ROOT, 'static'))
+STATIC_ROOT = '' #normpath(join(SITE_ROOT, 'static'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static'
+STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
@@ -212,6 +212,7 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     # Database migration helpers:
     #'south',
+    'rest_framework',
 )
 
 # Apps specific for this project go here.
@@ -234,6 +235,12 @@ LOGIN_REDIRECT_URL = '/'
 
 #STATIC_DOC_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '_static')
 
+########## REST FRAMEWORK CONFIGURATION
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
+########## END REST FRAMEWORK CONFIGURATION
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application

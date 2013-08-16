@@ -2,42 +2,17 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.contrib import databrowse
 from cash.models import Account, Transfer
+from api import views
 from django.conf import settings
-from tastypie import fields
-from tastypie.resources import ModelResource
-from tastypie.api import Api
-from tastypie.constants import ALL, ALL_WITH_RELATIONS
-from tastypie.authentication import ApiKeyAuthentication
+from rest_framework import routers
+
 
 admin.autodiscover()
 
-class AccountResource(ModelResource):
-    class Meta:
-        queryset = Account.objects.all()
-        filtering = {
-            'name': ALL
-        }
-        excludes = ['balance']
-        authentication = ApiKeyAuthentication()
 
-class TransferResource(ModelResource):
-    source = fields.ForeignKey(AccountResource, 'source', full=True)
-    destination = fields.ForeignKey(AccountResource, 'destination', full=True)
-    class Meta:
-        queryset = Transfer.objects.all()
-        filtering = {
-            'description': ALL,
-            'amount': ALL
-        }
-        ordering = ['created_on', 'validity_date']
-        authentication = ApiKeyAuthentication()
-
-
-
-v1_api = Api(api_name='v1')
-v1_api.register(AccountResource())
-v1_api.register(TransferResource())
-
+router = routers.DefaultRouter()
+router.register(r'accounts', views.AccountViewSet)
+router.register(r'transfers', views.TransferViewSet)
 
 
 urlpatterns = patterns('',
@@ -51,7 +26,12 @@ urlpatterns = patterns('',
 
     # url(r'^m/', include('mobile.urls')),
 
-    url(r'^api/', include(v1_api.urls)),
+    #url(r'^api/', include(v1_api.urls)),
+ 
+    url(r'^api/', include(router.urls)),
+    url(r'^api/api-auth', include('rest_framework.urls', namespace='api/rest_framework')),
+
+
 
     url(r'^report/', include('report.urls')),
     url(r'^analysis/', include('analysis.urls')),
