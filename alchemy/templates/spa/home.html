@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="{% static "ico/favicon.png" %}">
+
+    <title>Alchemy SPA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static "css/alchemy.css" %}" rel="stylesheet">
+
+    <script type="text/javascript">
+      var appStaticPath = "{% static '' %}";
+    </script>
+    <script data-main="{% static "js/main.js" %}" src="{% static "js/require.js" %}"></script>
+
+  </head>
+
+
+  <body></body>
+
+</html>

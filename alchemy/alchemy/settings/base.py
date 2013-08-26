@@ -220,6 +220,7 @@ LOCAL_APPS = (
     'analysis',
     'cash',
     'report',
+    'spa',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
