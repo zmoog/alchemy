@@ -4,9 +4,9 @@
 
 You can start to customize the app creating the local_settings.py
 
->
-> DEBUG=True
->
+```python
+DEBUG = True
+```
 
 This file is ignored by Git.
 
@@ -18,10 +18,13 @@ See http://www.pip-installer.org/en/latest/requirements.html for futher referenc
 
 ### Freezing
 
-> $ pip freeze > requirements.txt
-
+```bash
+$ pip freeze > requirements.txt
+```
 
 ### Install
 
-> pip install -r requirements.txt.
+```bash
+$ pip install -r requirements.txt.
+```
 
