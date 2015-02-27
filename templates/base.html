@@ -1,3 +1,5 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Welcome{% endblock %} - Alchemy</title>
 
-  <link href="/media/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>		
-  <link href="/media/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"></link>
-  <link href="/media/css/app.css" rel="stylesheet"></link>		
+  <link href="{{ STATIC_PREFIX }}media/bootstrap/css/bootstrap.min.css" rel="stylesheet" />		
+  <link href="{{ STATIC_PREFIX }}media/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{ STATIC_PREFIX }}media/css/app.css" rel="stylesheet" />
 
-  <script type="text/javascript" src="/media/js/jquery/min.js"></script>
-  <script type="text/javascript" src="/media/bootstrap/js/bootstrap.js"></script>
-  <script type="text/javascript" src="/media/js/highcharts.js"></script>
-  <script type="text/javascript" src="/media/js/app.js"></script>
+  <script type="text/javascript" src="{{ STATIC_PREFIX }}media/js/jquery/min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_PREFIX }}media/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="{{ STATIC_PREFIX }}media/js/highcharts.js"></script>
+  <script type="text/javascript" src="{{ STATIC_PREFIX }}media/js/app.js"></script>
 
 	{% comment %}
 	<style type="text/css">

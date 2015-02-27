@@ -1,7 +1,7 @@
 import os
 # Django settings for alchemy project.
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -41,6 +41,18 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+#STATIC_DOC_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '_static')
+STATIC_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '_static')
+
+STATIC_URL = '/static/'
+
+STATICFILES_FINDERS = (
+    ("django.contrib.staticfiles.finders.FileSystemFinder",
+     "django.contrib.staticfiles.finders.AppDirectoriesFinder")
+)
+
+
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = ''
@@ -53,7 +65,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'd()n*zeja_hhr@na6zi(_4db+25ib1v(u8$c7hmsd9n9#=sw0o'
@@ -105,6 +117,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.humanize',
     'django.contrib.webdesign',
+    'django.contrib.staticfiles',
     'cash',
     'tastypie',
 )
@@ -114,8 +127,6 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
-
-STATIC_DOC_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), '_static')
 
 try:
     from local_settings import *
